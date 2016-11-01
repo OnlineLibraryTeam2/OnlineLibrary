@@ -60,7 +60,7 @@ public class ClientController {
         return bookDao.searchByYear(year);
     }
 
-    public List<Book> recomendedBooks(String genreBook) {
+    public List<Book> recommendedBooks(String genreBook) {
         return bookDao.recommendedBooks(genreBook);
     }
 
