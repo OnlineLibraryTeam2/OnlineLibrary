@@ -36,7 +36,7 @@ public class BookDaoTest {
         List<Book> books = bookDao.searchBookTitle(book.getTitle());
         assertEquals(1, books.size());
         assertEquals(book, books.get(0));
-        //assertTrue(bookDao.delete(book));
+        assertTrue(bookDao.delete(book));
     }
 
     @Test
