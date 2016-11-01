@@ -11,7 +11,7 @@ import java.util.List;
 public class BookDao{
 
     public boolean takeBook(Book book){
-        return false;
+        return true;
     }
 
     public boolean returnBook(Book book) {
