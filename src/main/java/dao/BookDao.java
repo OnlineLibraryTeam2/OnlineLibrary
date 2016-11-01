@@ -20,12 +20,13 @@ public class BookDao implements IDao<Book> {
 
     private EntityManagerFactory factory;
     private Client client;
+    private Book book;
 
 
-    public BookDao(EntityManagerFactory factory, Client client) {
+    public BookDao(EntityManagerFactory factory, Client client, Book book) {
         this.factory = factory;
         this.client = client;
-
+this.book = book;
     }
 
     public boolean takeBook(Book book) {
@@ -39,6 +40,7 @@ public class BookDao implements IDao<Book> {
             clientBooks.add(book);
             try {
                 transaction.begin();
+                book.setBookCount(book.getBookCount()-1);
                 client.setTakenBooks(clientBooks);
                 transaction.commit();
                 return true;
@@ -63,6 +65,7 @@ public class BookDao implements IDao<Book> {
         clientBooks.add(book);
         try {
             transaction.begin();
+            book.setBookCount(book.getBookCount()+1);
             client.setHistory(clientBooks);
             transaction.commit();
             return true;
@@ -76,23 +79,6 @@ public class BookDao implements IDao<Book> {
 
 
     }
-/*
-    public int reservationBook(Book book) {
-
-        EntityManager manager = factory.createEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
-        book = manager.find(Book.class, book.getId());
-        client = manager.find(Client.class, client.getId());
-        List<Book> clientBooks = client.getReservationBooks();
-        clientBooks.add(book);
-        try {
-            transaction.begin();
-            client.setReservationBooks(clientBooks);
-            transaction.commit();
-            return
-        }
-        return 0;
-    }*/
 
     public List<Book> searchBookTitle(String title) {
         if (title != "") {
@@ -122,6 +108,7 @@ public class BookDao implements IDao<Book> {
         }
         return null;
     }
+
 
 
     public List<Book> recommendedBooks(String genreBook) {
@@ -154,21 +141,6 @@ public class BookDao implements IDao<Book> {
 
     }
 
-    public boolean editBookCount(int bookNumber) {
-
-        return false;
-    }
-
-    public boolean deleteBookNumber(int bookNumber) {
-
-        EntityManager manager = factory.createEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
-//        Book originBook = manager.find(Book.class, book.getId());
-
-        return false;
-
-
-    }
 
     @Override
     public boolean add(Book book) {
