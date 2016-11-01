@@ -101,7 +101,7 @@ public class BookDao implements IDao<Book> {
             EntityManager manager = factory.createEntityManager();
 
             try {
-                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.year = " + year , Book.class );
+                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.year = year" , Book.class );
                 return query.getResultList();
             } finally {
                 manager.close();
@@ -117,7 +117,7 @@ public class BookDao implements IDao<Book> {
             EntityManager manager = factory.createEntityManager();
 
             try {
-                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.genre = " + genreBook , Book.class );
+                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.genre = genreBook" , Book.class );
                 return query.getResultList();
             } finally {
                 manager.close();
