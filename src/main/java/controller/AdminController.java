@@ -57,22 +57,14 @@ public class AdminController {
         return clientDao.deleteFromBlacklist(client);
     }
 
-    public boolean addBook(String title, int year, Author author, String genre) {
-        Book book = new Book(title, year, genre, author);
+    public boolean addBook(String title, int year, Author author, String genre, int bookCount) {
+        Book book = new Book(title, year, genre, author, bookCount);
 
         return bookDao.add(book);
     }
 
     public boolean deleteBook(Book book) {
         return bookDao.delete(book);
-    }
-
-    public boolean editBookCount(int bookNumber) {
-        return bookDao.editBookCount(bookNumber);
-    }
-
-    public boolean deleteBookCount(int bookNumber) {
-        return bookDao.deleteBookNumber(bookNumber);
     }
 
     public boolean updateBookInfo(Book book) {

@@ -91,6 +91,7 @@ public class BookDao implements IDao<Book> {
                 manager.close();
             }
         }
+
         return null;
     }
 

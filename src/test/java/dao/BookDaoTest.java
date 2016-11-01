@@ -8,6 +8,8 @@ import org.junit.*;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -15,13 +17,13 @@ import static org.junit.Assert.*;
  */
 public class BookDaoTest {
 
-    private EntityManagerFactory factory;
-    private BookDao bookDao;
-    private Client client;
+    private static EntityManagerFactory factory;
+    private static BookDao bookDao;
+    private static Client client;
 
 
     @BeforeClass
-    public void setUpBeforeClass() throws Exception {
+    public static void setUpBeforeClass() throws Exception {
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
         client  = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
         bookDao = new BookDao(factory, client);
@@ -31,17 +33,33 @@ public class BookDaoTest {
     public void add() throws Exception {
         Book book = new Book("Java", 2010, "Technical", new Author("Oleg", "GG"), 1);
         assertTrue(bookDao.add(book));
-        assertEquals(book, bookDao.searchBookTitle(book.getTitle()));
+        List<Book> books = bookDao.searchBookTitle(book.getTitle());
+        assertEquals(1, books.size());
+        assertEquals(book, books.get(0));
+        //assertTrue(bookDao.delete(book));
     }
 
     @Test
     public void update() throws Exception {
+        Book book  = new Book("Java8", 2010, "Technical", new Author("Oleg", "GG"), 1);
+        assertTrue(bookDao.add(book));
+        book.setTitle("Java9");
+        book.setYear(2012);
+        assertTrue(bookDao.update(book));
+        List<Book> books = bookDao.searchBookTitle(book.getTitle());
+        assertEquals(1, books.size());
+        assertEquals(book, books.get(0));
+        assertTrue(bookDao.delete(book));
 
     }
 
     @Test
     public void delete() throws Exception {
-
+        Book book  = new Book("Java8", 2010, "Technical", new Author("Oleg", "GG"), 1);
+        assertTrue(bookDao.add(book));
+        assertTrue(bookDao.delete(book));
+        List<Book> books = bookDao.searchBookTitle(book.getTitle());
+        assertEquals(0, books.size());
     }
 
 
@@ -60,10 +78,7 @@ public class BookDaoTest {
 
     }
 
-    @Test@AfterClass
-    public void tearDown() throws Exception {
-
-    }
+    @Test
     public void searchBookTitle() throws Exception {
 
     }
@@ -96,7 +111,7 @@ public class BookDaoTest {
 
 
     @AfterClass
-    public void tearDownAfterClass() throws Exception {
+    public static void tearDownAfterClass() throws Exception {
         factory.close();
         bookDao = null;
         client = null;
