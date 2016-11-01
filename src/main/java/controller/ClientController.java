@@ -36,7 +36,7 @@ public class ClientController {
     }
 
     public boolean registration(String name, String surname, int age, String phoneNumber, String password, String loginMail) {
-        Client client = new Client(name, surname, age, phoneNumber, loginMail, password, false);
+        Client client = new Client(name, surname, age, phoneNumber, loginMail, password);
         return clientDao.add(client);
     }
 
@@ -44,9 +44,9 @@ public class ClientController {
         return clientDao.signIn(loginMail, password);
     }
 
-    public int reservation(Book book) {
+   /* public int reservation(Book book) {
         return bookDao.reservationBook(book);
-    }
+    }*/
 
     public List<Book> searchBookTitle(String title) {
         return bookDao.searchBookTitle(title);

@@ -40,32 +40,26 @@ public class Client extends Person {
             inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
     private List<Book> takenBooks;
 
-    @ManyToMany
-    @JoinTable(name = "reservation_books",
-            joinColumns =
-                    {@JoinColumn(name = "client_id", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
-    private List<Book> reservationBooks;
 
     public Client() {
         history = new ArrayList<>();
         takenBooks = new ArrayList<>();
-        reservationBooks = new ArrayList<>();
+
     }
 
     public Client(String name, String surname, int age, String phoneNumber,
-                  String loginMail, String password, boolean blackList) {
+                  String loginMail, String password) {
 
         super(name, surname);
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.loginMail = loginMail;
         this.password = password;
-        this.blackList = blackList;
+        blackList = false;
 
         history = new ArrayList<>();
         takenBooks = new ArrayList<>();
-        reservationBooks = new ArrayList<>();
+
     }
 
     public int getAge() {
@@ -124,13 +118,6 @@ public class Client extends Person {
         this.takenBooks = takenBooks;
     }
 
-    public List<Book> getReservationBooks() {
-        return reservationBooks;
-    }
-
-    public void setReservationBooks(List<Book> reservationBooks) {
-        this.reservationBooks = reservationBooks;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -168,8 +155,6 @@ public class Client extends Person {
                 ", password= " + password +
                 ", blackList= " + blackList +
                 ", history= " + history +
-                ", takenBooks= " + takenBooks +
-                ", reservationBooks= " + reservationBooks +
-                '}';
+                ", takenBooks= " + takenBooks;
     }
 }
