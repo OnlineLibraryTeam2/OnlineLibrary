@@ -20,13 +20,13 @@ public class BookDao implements IDao<Book> {
 
     private EntityManagerFactory factory;
     private Client client;
-    private Book book;
 
 
-    public BookDao(EntityManagerFactory factory, Client client, Book book) {
+
+    public BookDao(EntityManagerFactory factory, Client client) {
         this.factory = factory;
         this.client = client;
-this.book = book;
+
     }
 
     public boolean takeBook(Book book) {
@@ -81,7 +81,7 @@ this.book = book;
     }
 
     public List<Book> searchBookTitle(String title) {
-        if (title != "") {
+        if (!title.equals("")) {
             EntityManager manager = factory.createEntityManager();
 
             try {
@@ -112,7 +112,7 @@ this.book = book;
 
 
     public List<Book> recommendedBooks(String genreBook) {
-        if (genreBook != "") {
+        if (!genreBook.equals("")) {
             EntityManager manager = factory.createEntityManager();
 
             try {
