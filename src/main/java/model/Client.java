@@ -26,13 +26,25 @@ public class Client extends Person {
     @Column
     private boolean blackList;
 
-   /* @ManyToMany
+   @ManyToMany
     @JoinTable(name = "client_books",
             joinColumns =
                     {@JoinColumn(name = "client_id", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))*/
+            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
     private List<Book> history;
+
+    @ManyToMany
+    @JoinTable(name = "taken_books",
+            joinColumns =
+                    {@JoinColumn(name = "client_id", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
     private List<Book> takenBooks;
+
+    @ManyToMany
+    @JoinTable(name = "reservation_books",
+            joinColumns =
+                    {@JoinColumn(name = "client_id", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
     private List<Book> reservationBooks;
 
     public Client() {

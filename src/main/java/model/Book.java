@@ -19,6 +19,9 @@ public class Book {
     @Column
     private String genre;
 
+    @Column
+    private int bookCount;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
@@ -26,11 +29,12 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, int year, String genre, Author author) {
+    public Book(String title, int year, String genre, Author author, int bookCount) {
         this.title = title;
         this.year = year;
         this.genre = genre;
         this.author = author;
+        this.bookCount = bookCount;
     }
 
     public int getId() {
@@ -73,6 +77,14 @@ public class Book {
         this.author = author;
     }
 
+    public void setBookCount(int bookCount) {
+        this.bookCount = bookCount;
+    }
+
+    public int getBookCount() {
+        return bookCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -99,12 +111,12 @@ public class Book {
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", year=" + year +
-                ", genre='" + genre + '\'' +
-                ", author=" + author +
-                '}';
+                "id= " + id +
+                ", title= " + title +
+                ", year= " + year +
+                ", genre= " + genre +
+                ", author= " + author +
+                ", bookCount= " + bookCount;
     }
 
 }
