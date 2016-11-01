@@ -2,6 +2,7 @@ package dao;
 
 import model.Client;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 /**
@@ -9,19 +10,10 @@ import java.util.List;
  */
 public class ClientDao implements IDao {
 
-    @Override
-    public boolean add(Object obj) {
-        return false;
-    }
+    private EntityManagerFactory factory;
 
-    @Override
-    public boolean update(Object obj) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Object obj) {
-        return false;
+    public ClientDao(EntityManagerFactory factory) {
+        this.factory = factory;
     }
 
     public boolean signIn(String loginMail, String password) {
@@ -51,6 +43,21 @@ public class ClientDao implements IDao {
 
     public boolean deleteFromBlacklist(Client client) {
 
+        return false;
+    }
+
+    @Override
+    public boolean add(Object obj) {
+        return false;
+    }
+
+    @Override
+    public boolean update(Object obj) {
+        return false;
+    }
+
+    @Override
+    public boolean delete(Object obj) {
         return false;
     }
 
