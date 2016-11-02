@@ -2,13 +2,14 @@ package dao;
 
 /**
  * Created by alexp on 16.1.11.
+ * IDAO main interface, typed.
  */
-public interface IDao<T> {
+interface IDao<T> {
 
-    public boolean add(T obj);
+    boolean add(T obj);
 
-    public boolean update(T obj);
+    boolean update(T obj);
 
-    public boolean delete(T obj);
+    boolean delete(T obj);
 
 }
