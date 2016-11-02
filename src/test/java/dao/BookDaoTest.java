@@ -12,9 +12,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by alexp on 16.1.11.
- */
 public class BookDaoTest {
 
     private static EntityManagerFactory factory;
@@ -116,5 +113,9 @@ public class BookDaoTest {
         bookDao = null;
         client = null;
     }
+
+
+
+
 
 }

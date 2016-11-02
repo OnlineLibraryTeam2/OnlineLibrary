@@ -1,23 +1,35 @@
 package dao;
 
+import model.Client;
 import org.junit.*;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import static org.junit.Assert.*;
 
 /**
- * Created by alexp on 16.1.11.
+ * Created by student on 16.2.11.
  */
 public class ClientDaoTest {
+    private static EntityManagerFactory factory;
+    private static ClientDao clientDao;
 
     @BeforeClass
-    public void setUp() throws Exception {
-
+    public static void setUpBeforeClass() throws Exception {
+        factory = Persistence.createEntityManagerFactory("hibernate-unit");
+        clientDao  = new ClientDao(factory);
 
     }
 
+
     @Test
     public void signIn() throws Exception {
-
+        Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
+        assertTrue(clientDao.add(client));
+        assertTrue(clientDao.signIn(client.getLoginMail(),client.getPassword()));
+        //       Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertTrue(clientDao.delete(client));
     }
 
     @Test
@@ -47,22 +59,39 @@ public class ClientDaoTest {
 
     @Test
     public void add() throws Exception {
-
+        Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
+        assertTrue(clientDao.add(client));
+        Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertEquals(client, clients);
+        assertTrue(clientDao.delete(client));
     }
 
     @Test
     public void update() throws Exception {
-
+        Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
+        assertTrue(clientDao.add(client));
+        client.setName("Ivan1");
+        client.setAge(33);
+        assertTrue(clientDao.update(client));
+        Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertEquals(client, clients);
+        assertTrue(clientDao.delete(client));
     }
 
     @Test
     public void delete() throws Exception {
-
+        Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
+        assertTrue(clientDao.add(client));
+        assertTrue(clientDao.delete(client));
+        Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertNotEquals(client, clients);
     }
 
     @AfterClass
-    public void tearDown() throws Exception {
-
-
+    public static void tearDownAfterClass() throws Exception {
+        factory.close();
+        clientDao = null;
     }
+
+
 }
