@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by student on 16.1.11.
+ * Amended 16.2.11, DP.
  */
 
 
@@ -28,30 +29,34 @@ public class BookDao implements IDao<Book> {
     }
 
     public boolean takeBook(Book book) {
-        EntityManager manager = factory.createEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
-        book = manager.find(Book.class, book.getId());
+        if(book != null) {
 
-        if (book.getBookCount() != 0) {
+            EntityManager manager = factory.createEntityManager();
+            EntityTransaction transaction = manager.getTransaction();
+            book = manager.find(Book.class, book.getId());
 
-            client = manager.find(Client.class, client.getId());
-            List<Book> clientBooks = client.getTakenBooks();
-            clientBooks.add(book);
+            if (book.getBookCount() > 0) {
 
-            try {
-                transaction.begin();
-                book.setBookCount(book.getBookCount() - 1);
-                client.setTakenBooks(clientBooks);
-                manager.merge(client);
-                manager.merge(book);
-                transaction.commit();
-                return true;
-            } catch (Exception e) {
-                transaction.rollback();
-                return false;
-            } finally {
-                manager.close();
+                client = manager.find(Client.class, client.getId());
+
+                try {
+                    transaction.begin();
+                    List<Book> clientBooks = client.getTakenBooks();
+                    clientBooks.add(book);
+                    book.setBookCount(book.getBookCount() - 1);
+                    client.setTakenBooks(clientBooks);
+                    manager.merge(client);
+                    manager.merge(book);
+                    transaction.commit();
+                    return true;
+                } catch (Exception e) {
+                    transaction.rollback();
+                    return false;
+                } finally {
+                    manager.close();
+                }
             }
+            return false;
         }
         return false;
 
@@ -250,6 +255,3 @@ public class BookDao implements IDao<Book> {
         return false;
     }
 }
-
-
-
