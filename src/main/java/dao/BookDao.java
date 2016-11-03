@@ -1,6 +1,7 @@
 package dao;
 
 
+import model.Author;
 import model.Book;
 import model.Client;
 
@@ -172,6 +173,7 @@ public class BookDao implements IDao<Book> {
         if (book != null) {
             EntityManager manager = factory.createEntityManager();
             EntityTransaction transaction = manager.getTransaction();
+            book.getAuthor().getBookList().add(book);
 
             try {
                 transaction.begin();
@@ -234,6 +236,7 @@ public class BookDao implements IDao<Book> {
                 transaction.begin();
                 manager.remove(book);
                 transaction.commit();
+
 
                 return true;
             } catch (Exception e) {

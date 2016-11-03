@@ -1,9 +1,6 @@
 package model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +11,7 @@ import java.util.List;
 @Table(name = "authors")
 public class Author extends Person{
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Book> bookList;
 
     public Author() {
@@ -26,6 +23,7 @@ public class Author extends Person{
         this.bookList = new ArrayList<>();
     }
 
+    @OneToMany(mappedBy = "author")
     public List<Book> getBookList() {
         return bookList;
     }
@@ -37,7 +35,6 @@ public class Author extends Person{
     @Override
     public String toString() {
         return "Author{" + super.toString() +
-                "bookList=" + bookList +
                 '}';
     }
 }

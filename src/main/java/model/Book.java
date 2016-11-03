@@ -22,7 +22,7 @@ public class Book {
     @Column
     private int bookCount;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
 
@@ -110,7 +110,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "Book: " +
                 "id= " + id +
                 ", title= " + title +
                 ", year= " + year +

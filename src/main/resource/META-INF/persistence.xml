@@ -6,10 +6,11 @@
     <persistence-unit name="hibernate-unit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-        <class>model.Author</class>
+        <!--<class>model.Author</class>
         <class>model.Admin</class>
         <class>model.Book</class>
-        <class>model.Client</class>
+        <class>model.Client</class>-->
+
 
         <properties>
             <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
@@ -18,7 +19,7 @@
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/ACP14?createDatabaseIfNotExist=true"/>
             <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
         </properties>
     </persistence-unit>
 </persistence>

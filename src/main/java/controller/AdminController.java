@@ -21,11 +21,11 @@ public class AdminController {
     private ClientDao clientDao;
     private EntityManagerFactory factory;
 
-    public AdminController(AuthorDao authorDao, BookDao bookDao, ClientDao clientDao, EntityManagerFactory factory) {
-        this.authorDao = authorDao;
-        this.bookDao = bookDao;
-        this.clientDao = clientDao;
+    public AdminController(EntityManagerFactory factory) {
         this.factory = factory;
+        this.authorDao = new AuthorDao(factory);
+        this.bookDao = new BookDao(factory, new Client());
+        this.clientDao = new ClientDao(factory);
     }
 
     public boolean updateClientInfo(Client client) {
@@ -57,7 +57,7 @@ public class AdminController {
         return clientDao.deleteFromBlacklist(client);
     }
 
-    public boolean addBook(String title, int year, Author author, String genre, int bookCount) {
+    public boolean addBook(String title, int year, String genre, Author author,  int bookCount) {
         Book book = new Book(title, year, genre, author, bookCount);
 
         return bookDao.add(book);
@@ -72,8 +72,7 @@ public class AdminController {
     }
 
     public boolean addAuthor(String name, String surname) {
-        Author author = new Author(name, surname);
-        return authorDao.add(author);
+        return authorDao.add(new Author(name, surname));
     }
 
     public boolean deleteAuthor(Author author) {
@@ -82,5 +81,9 @@ public class AdminController {
 
     public boolean updateAuthorInfo(Author author) {
         return authorDao.update(author);
+    }
+
+    public List<Author> getAllAuthors(){
+        return authorDao.authorsList();
     }
 }
