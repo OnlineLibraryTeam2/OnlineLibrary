@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transaction;
 import java.util.List;
 
 /**
@@ -20,8 +19,6 @@ public class BookDao implements IDao<Book> {
 
     private EntityManagerFactory factory;
     private Client client;
-
-
 
     public BookDao(EntityManagerFactory factory, Client client) {
         this.factory = factory;
@@ -76,8 +73,6 @@ public class BookDao implements IDao<Book> {
             manager.close();
         }
 
-
-
     }
 
     public List<Book> searchBookTitle(String title) {
@@ -107,6 +102,7 @@ public class BookDao implements IDao<Book> {
                 manager.close();
             }
         }
+
         return null;
     }
 
@@ -123,6 +119,7 @@ public class BookDao implements IDao<Book> {
                 manager.close();
             }
         }
+
         return null;
     }
 
@@ -213,6 +210,7 @@ public class BookDao implements IDao<Book> {
                 manager.close();
             }
         }
+
         return false;
     }
 }

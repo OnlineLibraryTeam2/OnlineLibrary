@@ -62,6 +62,10 @@ public class BookDaoTest {
 
     @Test
     public void takeBook() throws Exception {
+        Book book  = new Book("Java8", 2010, "Technical", new Author("Oleg", "GG"), 1);
+        assertTrue(bookDao.add(book));
+        assertTrue(bookDao.takeBook(book));
+
 
     }
 
@@ -70,10 +74,6 @@ public class BookDaoTest {
 
     }
 
-    @Test
-    public void reservationBook() throws Exception {
-
-    }
 
     @Test
     public void searchBookTitle() throws Exception {
@@ -94,18 +94,6 @@ public class BookDaoTest {
     public void showAllBooks() throws Exception {
 
     }
-
-    @Test
-    public void editBookCount() throws Exception {
-
-    }
-
-    @Test
-    public void deleteBookNumber() throws Exception {
-
-    }
-
-
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {

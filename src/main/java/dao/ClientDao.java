@@ -20,25 +20,26 @@ public class ClientDao implements IDao<Client> {
         this.factory = factory;
     }
 
-    public boolean signIn(String loginMail, String password) {
+    public Client signIn(String loginMail, String password) {
         if ((loginMail != null && password != null) &&
                 (!loginMail.equals("") && !password.equals(""))) {
 
             EntityManager entityManager = factory.createEntityManager();
 
             try {
-                TypedQuery<Client> typedQuery = entityManager.createQuery("SELECT c FROM Client c WHERE c.loginMail = loginMail" +
-                        " AND c.password = password", Client.class);
+                TypedQuery<Client> typedQuery = entityManager.createQuery("SELECT c FROM Client c WHERE c.loginMail =:loginMail" +
+                        " AND c.password =:password", Client.class);
 
-                if (!typedQuery.getResultList().isEmpty()) {
+                typedQuery.setParameter("loginMail", loginMail);
+                typedQuery.setParameter("password", password);
 
-                    return true;
-                }
+                return typedQuery.getSingleResult();
+
             } finally {
                 entityManager.close();
             }
         }
-        return false;
+        return null;
     }
 
     public Client findClientByMail(String mailClient) {
@@ -46,8 +47,8 @@ public class ClientDao implements IDao<Client> {
             EntityManager entityManager = factory.createEntityManager();
 
             try {
-                TypedQuery<Client> typedQuery = entityManager.createQuery("SELECT c FROM Client c WHERE c.loginMail = mailClient", Client.class);
-
+                TypedQuery<Client> typedQuery = entityManager.createQuery("SELECT c FROM Client c WHERE c.loginMail =:mailClient", Client.class);
+                typedQuery.setParameter("mailClient", mailClient);
                 return typedQuery.getSingleResult();
             } finally {
                 entityManager.close();
@@ -72,8 +73,8 @@ public class ClientDao implements IDao<Client> {
         EntityManager entityManager = factory.createEntityManager();
 
         try {
-            TypedQuery<Client> typedQuery = entityManager.createQuery("SELECT c FROM Client c WHERE c.blacklist = true", Client.class);
-
+            TypedQuery<Client> typedQuery = entityManager.createQuery("SELECT c FROM Client c WHERE c.blacklist =:true", Client.class);
+            typedQuery.setParameter("true", true);
             return typedQuery.getResultList();
         } finally {
             entityManager.close();
@@ -172,7 +173,6 @@ public class ClientDao implements IDao<Client> {
                 lookupClient.setBlackList(client.isBlackList());
                 lookupClient.setHistory(client.getHistory());
                 lookupClient.setTakenBooks(client.getTakenBooks());
-                //lookupClient.setReservationBooks(client.getReservationBooks());
                 entityManager.merge(client);
                 entityTransaction.commit();
 
