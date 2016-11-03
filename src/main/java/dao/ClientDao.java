@@ -78,9 +78,9 @@ public class ClientDao implements IDao<Client> {
 
         try {
             TypedQuery<Client> typedQuery = entityManager.createQuery(
-                    "SELECT c FROM Client c WHERE c.blacklist =:true", Client.class);
+                    "SELECT c FROM Client c WHERE c.blackList =:result", Client.class);
 
-            typedQuery.setParameter("true", true);
+            typedQuery.setParameter("result", true);
             return typedQuery.getResultList();
         } finally {
             entityManager.close();
@@ -97,6 +97,7 @@ public class ClientDao implements IDao<Client> {
             try {
                 entityTransaction.begin();
                 client.setBlackList(true);
+                entityManager.merge(client);
                 entityTransaction.commit();
 
                 return true;
@@ -122,6 +123,7 @@ public class ClientDao implements IDao<Client> {
             try {
                 entityTransaction.begin();
                 client.setBlackList(false);
+                entityManager.merge(client);
                 entityTransaction.commit();
 
                 return true;
