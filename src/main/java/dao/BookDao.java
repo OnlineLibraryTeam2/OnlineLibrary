@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transaction;
 import java.util.List;
 
 /**
@@ -30,14 +31,14 @@ public class BookDao implements IDao<Book> {
         EntityManager manager = factory.createEntityManager();
         EntityTransaction transaction = manager.getTransaction();
         book = manager.find(Book.class, book.getId());
-        if (book.getBookCount() !=0) {
+        if (book.getBookCount() != 0) {
 
             client = manager.find(Client.class, client.getId());
             List<Book> clientBooks = client.getTakenBooks();
             clientBooks.add(book);
             try {
                 transaction.begin();
-                book.setBookCount(book.getBookCount()-1);
+                book.setBookCount(book.getBookCount() - 1);
                 client.setTakenBooks(clientBooks);
                 transaction.commit();
                 return true;
@@ -58,21 +59,28 @@ public class BookDao implements IDao<Book> {
         EntityTransaction transaction = manager.getTransaction();
         book = manager.find(Book.class, book.getId());
         client = manager.find(Client.class, client.getId());
-        List<Book> clientBooks = client.getHistory();
-        clientBooks.add(book);
-        try {
-            transaction.begin();
-            book.setBookCount(book.getBookCount()+1);
-            client.setHistory(clientBooks);
-            transaction.commit();
-            return true;
-        } catch (Exception e) {
-            transaction.rollback();
-            return false;
-        } finally {
-            manager.close();
-        }
 
+        List<Book> takenBooks = client.getTakenBooks();  //proveritj dobavitj
+        if (takenBooks.contains(book)) {
+            takenBooks.remove(book);
+            List<Book> clientBooks = client.getHistory();
+
+            clientBooks.add(book);
+            try {
+                transaction.begin();
+                book.setBookCount(book.getBookCount() + 1);
+                client.setHistory(clientBooks);
+                transaction.commit();
+                return true;
+            } catch (Exception e) {
+                transaction.rollback();
+                return false;
+            } finally {
+                manager.close();
+            }
+
+        }
+        return false;
     }
 
     public List<Book> searchBookTitle(String title) {
@@ -80,7 +88,8 @@ public class BookDao implements IDao<Book> {
             EntityManager manager = factory.createEntityManager();
 
             try {
-                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.title = title" , Book.class );
+                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.title =:title", Book.class);
+                query.setParameter("title", title);
                 return query.getResultList();
             } finally {
                 manager.close();
@@ -96,16 +105,15 @@ public class BookDao implements IDao<Book> {
             EntityManager manager = factory.createEntityManager();
 
             try {
-                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.year = year" , Book.class );
+                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.year =:year", Book.class);
+                query.setParameter("year", year);
                 return query.getResultList();
             } finally {
                 manager.close();
             }
         }
-
         return null;
     }
-
 
 
     public List<Book> recommendedBooks(String genreBook) {
@@ -113,16 +121,16 @@ public class BookDao implements IDao<Book> {
             EntityManager manager = factory.createEntityManager();
 
             try {
-                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.genre = genreBook" , Book.class );
+                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.genre =:genreBook", Book.class);
+                query.setParameter("genreBook", genreBook);
+
                 return query.getResultList();
             } finally {
                 manager.close();
             }
         }
-
         return null;
     }
-
 
 
     public List<Book> showAllBooks() {
@@ -210,7 +218,6 @@ public class BookDao implements IDao<Book> {
                 manager.close();
             }
         }
-
         return false;
     }
 }
