@@ -8,7 +8,7 @@ import java.util.List;
  * Created by alexp on 16.1.11.
  */
 @Entity
-@Table(name = "clients")
+@Table(name = "clients",  uniqueConstraints = {@UniqueConstraint(columnNames = {"loginMail"})})
 public class Client extends Person {
 
     @Column

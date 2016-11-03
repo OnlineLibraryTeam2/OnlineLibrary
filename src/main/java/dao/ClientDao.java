@@ -27,7 +27,8 @@ public class ClientDao implements IDao<Client> {
             EntityManager entityManager = factory.createEntityManager();
 
             try {
-                TypedQuery<Client> typedQuery = entityManager.createQuery("SELECT c FROM Client c WHERE c.loginMail =:loginMail" +
+                TypedQuery<Client> typedQuery = entityManager.createQuery(
+                        "SELECT c FROM Client c WHERE c.loginMail =:loginMail" +
                         " AND c.password =:password", Client.class);
 
                 typedQuery.setParameter("loginMail", loginMail);
@@ -39,6 +40,7 @@ public class ClientDao implements IDao<Client> {
                 entityManager.close();
             }
         }
+
         return null;
     }
 
@@ -47,7 +49,9 @@ public class ClientDao implements IDao<Client> {
             EntityManager entityManager = factory.createEntityManager();
 
             try {
-                TypedQuery<Client> typedQuery = entityManager.createQuery("SELECT c FROM Client c WHERE c.loginMail =:mailClient", Client.class);
+                TypedQuery<Client> typedQuery = entityManager.createQuery(
+                        "SELECT c FROM Client c WHERE c.loginMail =:mailClient", Client.class);
+
                 typedQuery.setParameter("mailClient", mailClient);
                 return typedQuery.getSingleResult();
             } finally {
@@ -73,7 +77,9 @@ public class ClientDao implements IDao<Client> {
         EntityManager entityManager = factory.createEntityManager();
 
         try {
-            TypedQuery<Client> typedQuery = entityManager.createQuery("SELECT c FROM Client c WHERE c.blacklist =:true", Client.class);
+            TypedQuery<Client> typedQuery = entityManager.createQuery(
+                    "SELECT c FROM Client c WHERE c.blacklist =:true", Client.class);
+
             typedQuery.setParameter("true", true);
             return typedQuery.getResultList();
         } finally {
@@ -151,6 +157,7 @@ public class ClientDao implements IDao<Client> {
                 entityManager.close();
             }
         }
+
         return false;
     }
 

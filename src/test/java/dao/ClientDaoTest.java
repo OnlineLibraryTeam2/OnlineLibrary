@@ -27,8 +27,8 @@ public class ClientDaoTest {
     public void signIn() throws Exception {
         Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
         assertTrue(clientDao.add(client));
-        assertTrue(clientDao.signIn(client.getLoginMail(),client.getPassword()));
-        //       Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertEquals(client, clientDao.signIn(client.getLoginMail(),client.getPassword()));
+
         assertTrue(clientDao.delete(client));
     }
 

@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transaction;
 import java.util.List;
 
 /**
@@ -31,15 +30,19 @@ public class BookDao implements IDao<Book> {
         EntityManager manager = factory.createEntityManager();
         EntityTransaction transaction = manager.getTransaction();
         book = manager.find(Book.class, book.getId());
+
         if (book.getBookCount() != 0) {
 
             client = manager.find(Client.class, client.getId());
             List<Book> clientBooks = client.getTakenBooks();
             clientBooks.add(book);
+
             try {
                 transaction.begin();
                 book.setBookCount(book.getBookCount() - 1);
                 client.setTakenBooks(clientBooks);
+                manager.merge(client);
+                manager.merge(book);
                 transaction.commit();
                 return true;
             } catch (Exception e) {
@@ -60,16 +63,19 @@ public class BookDao implements IDao<Book> {
         book = manager.find(Book.class, book.getId());
         client = manager.find(Client.class, client.getId());
 
-        List<Book> takenBooks = client.getTakenBooks();  //proveritj dobavitj
+        List<Book> takenBooks = client.getTakenBooks();
         if (takenBooks.contains(book)) {
+
             takenBooks.remove(book);
             List<Book> clientBooks = client.getHistory();
-
             clientBooks.add(book);
+
             try {
                 transaction.begin();
                 book.setBookCount(book.getBookCount() + 1);
                 client.setHistory(clientBooks);
+                manager.merge(book);
+                manager.merge(client);
                 transaction.commit();
                 return true;
             } catch (Exception e) {
@@ -80,15 +86,19 @@ public class BookDao implements IDao<Book> {
             }
 
         }
+
         return false;
     }
 
     public List<Book> searchBookTitle(String title) {
-        if (!title.equals("")) {
+        if (title != null && !title.equals("")) {
+
             EntityManager manager = factory.createEntityManager();
 
             try {
-                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.title =:title", Book.class);
+                TypedQuery<Book> query = manager.createQuery(
+                        "SELECT b FROM Book b WHERE b.title =:title", Book.class);
+
                 query.setParameter("title", title);
                 return query.getResultList();
             } finally {
@@ -102,26 +112,32 @@ public class BookDao implements IDao<Book> {
 
     public List<Book> searchByYear(int year) {
         if (year != 0) {
+
             EntityManager manager = factory.createEntityManager();
 
             try {
-                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.year =:year", Book.class);
+                TypedQuery<Book> query = manager.createQuery(
+                        "SELECT b FROM Book b WHERE b.year =:year", Book.class);
+
                 query.setParameter("year", year);
                 return query.getResultList();
             } finally {
                 manager.close();
             }
         }
+
         return null;
     }
 
 
     public List<Book> recommendedBooks(String genreBook) {
-        if (!genreBook.equals("")) {
+        if (genreBook != null && !genreBook.equals("")) {
             EntityManager manager = factory.createEntityManager();
 
             try {
-                TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.genre =:genreBook", Book.class);
+                TypedQuery<Book> query = manager.createQuery(
+                        "SELECT b FROM Book b WHERE b.genre =:genreBook", Book.class);
+
                 query.setParameter("genreBook", genreBook);
 
                 return query.getResultList();
@@ -129,6 +145,7 @@ public class BookDao implements IDao<Book> {
                 manager.close();
             }
         }
+
         return null;
     }
 
@@ -136,6 +153,7 @@ public class BookDao implements IDao<Book> {
     public List<Book> showAllBooks() {
 
         EntityManager manager = factory.createEntityManager();
+
         try {
             TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b", Book.class);
 
@@ -150,6 +168,7 @@ public class BookDao implements IDao<Book> {
 
     @Override
     public boolean add(Book book) {
+
         if (book != null) {
             EntityManager manager = factory.createEntityManager();
             EntityTransaction transaction = manager.getTransaction();
@@ -167,22 +186,26 @@ public class BookDao implements IDao<Book> {
             }
 
         }
+
         return false;
     }
 
     @Override
     public boolean update(Book book) {
         if (book != null) {
+
             EntityManager manager = factory.createEntityManager();
             EntityTransaction transaction = manager.getTransaction();
             Book originBook = manager.find(Book.class, book.getId());
 
             try {
                 transaction.begin();
+
                 originBook.setTitle(book.getTitle());
                 originBook.setAuthor(book.getAuthor());
                 originBook.setGenre(book.getGenre());
                 originBook.setYear(book.getYear());
+
                 manager.merge(originBook);
                 transaction.commit();
 
@@ -202,9 +225,11 @@ public class BookDao implements IDao<Book> {
     @Override
     public boolean delete(Book book) {
         if (book != null) {
+
             EntityManager manager = factory.createEntityManager();
             EntityTransaction transaction = manager.getTransaction();
             book = manager.find(Book.class, book.getId());
+
             try {
                 transaction.begin();
                 manager.remove(book);
@@ -218,6 +243,7 @@ public class BookDao implements IDao<Book> {
                 manager.close();
             }
         }
+
         return false;
     }
 }

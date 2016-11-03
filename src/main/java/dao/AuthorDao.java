@@ -26,7 +26,8 @@ public class AuthorDao implements IDao<Author> {
         EntityManager entityManager = factory.createEntityManager();
 
         try {
-            TypedQuery<Author> typedQuery = entityManager.createQuery("SELECT author FROM Author author", Author.class);
+            TypedQuery<Author> typedQuery = entityManager.createQuery(
+                    "SELECT author FROM Author author", Author.class);
 
             return typedQuery.getResultList();
         }

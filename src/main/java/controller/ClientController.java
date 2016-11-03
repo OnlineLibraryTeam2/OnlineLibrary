@@ -40,13 +40,9 @@ public class ClientController {
         return clientDao.add(client);
     }
 
-    public boolean signIn(String loginMail, String password) {
+    public Client signIn(String loginMail, String password) {
         return clientDao.signIn(loginMail, password);
     }
-
-   /* public int reservation(Book book) {
-        return bookDao.reservationBook(book);
-    }*/
 
     public List<Book> searchBookTitle(String title) {
         return bookDao.searchBookTitle(title);
