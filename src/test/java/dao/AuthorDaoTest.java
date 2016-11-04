@@ -109,7 +109,7 @@ public class AuthorDaoTest {
 
     @Test
     public void searchByAuthor() throws Exception {
-        BookDao bookDao = new BookDao(factory, new Client());
+        BookDao bookDao = new BookDao(factory);
         AuthorDao authorDao = new AuthorDao(factory);
 
         assertTrue(authorDao.add(author));

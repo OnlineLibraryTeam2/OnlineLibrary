@@ -148,12 +148,10 @@ public class Client extends Person {
     @Override
     public String toString() {
         return "Client " + super.toString() +
-                "age=" + age +
+                ", age=" + age +
                 ", phoneNumber= " + phoneNumber +
                 ", loginMail= " + loginMail +
                 ", password= " + password +
-                ", blackList= " + blackList +
-                ", history= " + history +
-                ", takenBooks= " + takenBooks;
+                ", blackList= " + blackList;
     }
 }

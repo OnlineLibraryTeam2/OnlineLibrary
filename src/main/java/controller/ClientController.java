@@ -14,29 +14,28 @@ import java.util.List;
  * Created by alexp on 16.1.11.
  */
 public class ClientController {
-    // null
+
     private AuthorDao authorDao;
     private BookDao bookDao;
     private ClientDao clientDao;
     private EntityManagerFactory factory;
 
-    public ClientController(AuthorDao authorDao, BookDao bookDao, ClientDao clientDao, EntityManagerFactory factory) {
-        this.authorDao = authorDao;
-        this.bookDao = bookDao;
-        this.clientDao = clientDao;
+    public ClientController(EntityManagerFactory factory) {
         this.factory = factory;
+        this.authorDao = new AuthorDao(this.factory);
+        this.bookDao = new BookDao(this.factory);
+        this.clientDao = new ClientDao(this.factory);
     }
 
-    public boolean takeBook(Book book) {
-        return bookDao.takeBook(book);
+    public boolean takeBook(Book book, Client client) {
+        return bookDao.takeBook(book, client);
     }
 
-    public boolean returnBook(Book book) {
-        return bookDao.returnBook(book);
+    public boolean returnBook(Book book, Client client) {
+        return bookDao.returnBook(book, client);
     }
 
-    public boolean registration(String name, String surname, int age, String phoneNumber, String password, String loginMail) {
-        Client client = new Client(name, surname, age, phoneNumber, loginMail, password);
+    public boolean registration(Client client) {
         return clientDao.add(client);
     }
 

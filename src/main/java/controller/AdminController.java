@@ -24,7 +24,7 @@ public class AdminController {
     public AdminController(EntityManagerFactory factory) {
         this.factory = factory;
         this.authorDao = new AuthorDao(factory);
-        this.bookDao = new BookDao(factory, new Client());
+        this.bookDao = new BookDao(factory);
         this.clientDao = new ClientDao(factory);
     }
 
@@ -86,4 +86,5 @@ public class AdminController {
     public List<Author> getAllAuthors(){
         return authorDao.authorsList();
     }
+
 }

@@ -20,15 +20,12 @@ import java.util.List;
 public class BookDao implements IDao<Book> {
 
     private EntityManagerFactory factory;
-    private Client client;
 
-    public BookDao(EntityManagerFactory factory, Client client) {
+    public BookDao(EntityManagerFactory factory) {
         this.factory = factory;
-        this.client = client;
-
     }
 
-    public boolean takeBook(Book book) {
+    public boolean takeBook(Book book, Client client) {
         if(book != null) {
 
             EntityManager manager = factory.createEntityManager();
@@ -36,14 +33,15 @@ public class BookDao implements IDao<Book> {
             book = manager.find(Book.class, book.getId());
 
             if (book.getBookCount() > 0) {
-
                 client = manager.find(Client.class, client.getId());
 
                 try {
                     transaction.begin();
                     List<Book> clientBooks = client.getTakenBooks();
-                    clientBooks.add(book);
                     book.setBookCount(book.getBookCount() - 1);
+                    Book takenBook = new Book(book.getTitle(), book.getYear(), book.getGenre(), book.getAuthor(), 1);
+                    takenBook.setId(book.getId());
+                    clientBooks.add(takenBook);
                     client.setTakenBooks(clientBooks);
                     manager.merge(client);
                     manager.merge(book);
@@ -62,7 +60,7 @@ public class BookDao implements IDao<Book> {
 
     }
 
-    public boolean returnBook(Book book) {
+    public boolean returnBook(Book book, Client client) {
 
         EntityManager manager = factory.createEntityManager();
         EntityTransaction transaction = manager.getTransaction();

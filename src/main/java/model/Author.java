@@ -23,7 +23,6 @@ public class Author extends Person{
         this.bookList = new ArrayList<>();
     }
 
-    @OneToMany(mappedBy = "author")
     public List<Book> getBookList() {
         return bookList;
     }
