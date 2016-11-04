@@ -110,10 +110,17 @@ public class AuthorDaoTest {
     @Test
     public void searchByAuthor() throws Exception {
         BookDao bookDao = new BookDao(factory, new Client());
+        AuthorDao authorDao = new AuthorDao(factory);
 
-        Book book1 = new Book("1", 1, "3", author, 3);
-        Book book2 = new Book("2", 2, "3", author, 3);
-        Book book3 = new Book("3", 3, "3", author, 3);
+        assertTrue(authorDao.add(author));
+        List<Author> authors =  authorDao.authorsList();
+        assertFalse(authors.isEmpty());
+        assertEquals(1, authors.size());
+        author = authors.get(0);
+
+        Book book1 = new Book("java1", 1, "Tech", author, 3);
+        Book book2 = new Book("java2", 2, "Tech", author, 3);
+        Book book3 = new Book("java3", 3, "Tech", author, 3);
 
         List<Book> expected = new ArrayList<>();
         Collections.addAll(expected, book1, book2, book3);

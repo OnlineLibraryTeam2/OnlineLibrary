@@ -178,7 +178,6 @@ public class BookDao implements IDao<Book> {
         if (book != null) {
             EntityManager manager = factory.createEntityManager();
             EntityTransaction transaction = manager.getTransaction();
-            book.getAuthor().getBookList().add(book);
 
             try {
                 transaction.begin();

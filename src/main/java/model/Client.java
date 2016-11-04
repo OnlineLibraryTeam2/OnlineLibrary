@@ -44,7 +44,6 @@ public class Client extends Person {
     public Client() {
         history = new ArrayList<>();
         takenBooks = new ArrayList<>();
-
     }
 
     public Client(String name, String surname, int age, String phoneNumber,

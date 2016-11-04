@@ -22,7 +22,7 @@ public class Book {
     @Column
     private int bookCount;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
 

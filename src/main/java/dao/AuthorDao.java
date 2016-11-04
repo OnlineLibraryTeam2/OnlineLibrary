@@ -127,29 +127,4 @@ public class AuthorDao implements IDao<Author> {
         return false;
     }
 
-    /*public boolean addAuthorBook(Book book) {
-        EntityManager manager = factory.createEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
-
-        Author author = manager.find(Author.class, book.getAuthor().getId());
-
-        try {
-            transaction.begin();
-            List<Book> books = author.getBookList();
-            books.add(book);
-            author.setBookList(books);
-            manager.merge(author);
-            transaction.commit();
-
-        }catch (Exception e) {
-            transaction.rollback();
-
-            return false;
-        }
-        finally {
-            manager.close();
-        }
-
-        return false;
-    }*/
 }
