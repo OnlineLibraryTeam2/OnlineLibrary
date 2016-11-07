@@ -1,11 +1,10 @@
 package dao;
 
-import controller.AdminController;
-import controller.ClientController;
 import model.Author;
 import model.Book;
 import model.Client;
 import org.junit.*;
+import service.GeneralService;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -24,16 +23,17 @@ public class BookDaoTest {
     private static BookDao bookDao;
     private static Client client;
     private static Author author;
-    private static AdminController adminController;
+    private static GeneralService generalService;
 
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
+
         factory = Persistence.createEntityManagerFactory("hibernate-unit");
         client  = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
-        adminController = new AdminController(factory);
-        adminController.addAuthor("Fedya", "Vasilyev");
-        author = adminController.getAllAuthors().get(0);
+        generalService = new GeneralService(factory);
+        generalService.addAuthor("Fedya", "Vasilyev");
+        author = generalService.getAllAuthors().get(0);
         bookDao = new BookDao(factory);
     }
 
@@ -66,34 +66,29 @@ public class BookDaoTest {
         Book book  = new Book("Java8", 2010, "Technical", author, 1);
         assertTrue(bookDao.add(book));
         List<Book> books = bookDao.searchBookTitle(book.getTitle());
-        book.setId(books.get(0).getId());
         assertEquals(1, books.size());
         assertTrue(bookDao.delete(books.get(0)));
-        /*books.remove(0);
-        assertEquals(0, books.size());*/
-        assertEquals(0, bookDao.showAllBooks());
+        assertEquals(0, bookDao.showAllBooks().size());
     }
 
     @Test
     public void takeBook() throws Exception {
         Book book  = new Book("Java8", 2010, "Technical", author, 5);
-        ClientController clientController = new ClientController(factory);
-        clientController.registration(client);
-        client = adminController.findClientByMail(client.getLoginMail());
+        generalService.registration(client);
+        //client = generalService.findClientByMail(client.getLoginMail());
         assertTrue(bookDao.add(book));
         assertTrue(bookDao.takeBook(book, client));
         List<Book> ourAddedBook = bookDao.searchBookTitle(book.getTitle());
-        assertEquals(1, ourAddedBook.size());
+        //assertEquals(1, ourAddedBook.size());
         int addedBookCount = ourAddedBook.get(0).getBookCount();
         assertEquals(book.getBookCount() - 1, addedBookCount);
         assertTrue(bookDao.delete(book));
     }
-
+GeneralService service = new GeneralService(factory);
     @Test
     public void returnBook() throws Exception {
         Book book  = new Book("Java8", 2010, "Technical", author, 5);
-        ClientController clientController = new ClientController(factory);
-        clientController.registration(client);
+        generalService.registration(client);
         assertTrue(bookDao.add(book));
         assertTrue(bookDao.takeBook(book, client));
         List<Book> ourTakenBook = bookDao.searchBookTitle(book.getTitle());

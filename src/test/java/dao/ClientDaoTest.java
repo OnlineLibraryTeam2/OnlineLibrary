@@ -47,7 +47,7 @@ public class ClientDaoTest {
     @Test
     public void showAllClients() throws Exception {
         Client client = new Client("Ivan", "Ivanov", 23, "371", "mail1.com", "1234");
-        Client client1 = new Client("Ivan", "Ivanov", 23, "371", "mail11.com", "1234");
+        Client client1 = new Client("Oleg", "Karpov", 23, "371", "mail2.com", "1234");
         List<Client> clients = new LinkedList<>();
         clients.add(client);
         clients.add(client1);

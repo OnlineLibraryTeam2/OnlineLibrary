@@ -1,4 +1,4 @@
-package controller;
+package service;
 
 import dao.AuthorDao;
 import dao.BookDao;
@@ -9,19 +9,18 @@ import model.Client;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
-import java.util.StringJoiner;
 
 /**
- * Created by student on 16.1.11.
+ * Created by alexp on 16.7.11.
  */
-public class AdminController {
+public class GeneralService {
 
     private AuthorDao authorDao;
     private BookDao bookDao;
     private ClientDao clientDao;
     private EntityManagerFactory factory;
 
-    public AdminController(EntityManagerFactory factory) {
+    public GeneralService(EntityManagerFactory factory) {
         this.factory = factory;
         this.authorDao = new AuthorDao(factory);
         this.bookDao = new BookDao(factory);
@@ -57,7 +56,7 @@ public class AdminController {
         return clientDao.deleteFromBlacklist(client);
     }
 
-    public boolean addBook(String title, int year, String genre, Author author,  int bookCount) {
+    public boolean addBook(String title, int year, String genre, Author author, int bookCount) {
         Book book = new Book(title, year, genre, author, bookCount);
 
         return bookDao.add(book);
@@ -87,4 +86,39 @@ public class AdminController {
         return authorDao.authorsList();
     }
 
+    public boolean takeBook(Book book, Client client) {
+        return bookDao.takeBook(book, client);
+    }
+
+    public boolean returnBook(Book book, Client client) {
+        return bookDao.returnBook(book, client);
+    }
+
+    public boolean registration(Client client) {
+        return clientDao.add(client);
+    }
+
+    public Client signIn(String loginMail, String password) {
+        return clientDao.signIn(loginMail, password);
+    }
+
+    public List<Book> searchBookTitle(String title) {
+        return bookDao.searchBookTitle(title);
+    }
+
+    public List<Book> searchBookAuthor(Author author) {
+        return authorDao.searchByAuthor(author);
+    }
+
+    public List<Book> searchByYear(int year) {
+        return bookDao.searchByYear(year);
+    }
+
+    public List<Book> recommendedBooks(String genreBook) {
+        return bookDao.recommendedBooks(genreBook);
+    }
+
+    public List<Book> showAllBooks() {
+        return bookDao.showAllBooks();
+    }
 }

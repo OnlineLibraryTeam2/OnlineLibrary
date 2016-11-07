@@ -228,17 +228,16 @@ public class BookDao implements IDao<Book> {
 
     @Override
     public boolean delete(Book book) {
-        if (book != null) {
 
             EntityManager manager = factory.createEntityManager();
             EntityTransaction transaction = manager.getTransaction();
             book = manager.find(Book.class, book.getId());
 
             try {
+
                 transaction.begin();
                 manager.remove(book);
                 transaction.commit();
-
 
                 return true;
             } catch (Exception e) {
@@ -247,8 +246,6 @@ public class BookDao implements IDao<Book> {
             } finally {
                 manager.close();
             }
-        }
 
-        return false;
     }
 }

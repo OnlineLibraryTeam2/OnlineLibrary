@@ -27,7 +27,7 @@ public class Client extends Person {
     private boolean blackList;
 
    @ManyToMany
-    @JoinTable(name = "client_books",
+    @JoinTable(name = "client_history",
             joinColumns =
                     {@JoinColumn(name = "client_id", referencedColumnName = "id")},
             inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
