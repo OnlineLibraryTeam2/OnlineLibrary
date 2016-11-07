@@ -1,7 +1,6 @@
 package dao;
 
 
-import model.Author;
 import model.Book;
 import model.Client;
 
@@ -28,30 +27,32 @@ public class BookDao implements IDao<Book> {
     public boolean takeBook(Book book, Client client) {
         if(book != null) {
 
-            EntityManager manager = factory.createEntityManager();
-            EntityTransaction transaction = manager.getTransaction();
-            book = manager.find(Book.class, book.getId());
+            EntityManager bookManager = factory.createEntityManager();
+            EntityTransaction bookTransaction = bookManager.getTransaction();
+
+            book = bookManager.find(Book.class, book.getId());
 
             if (book.getBookCount() > 0) {
-                client = manager.find(Client.class, client.getId());
-
+                    client = bookManager.find(Client.class, client.getId());
                 try {
-                    transaction.begin();
+                    bookTransaction.begin();
+
                     List<Book> clientBooks = client.getTakenBooks();
                     book.setBookCount(book.getBookCount() - 1);
                     Book takenBook = new Book(book.getTitle(), book.getYear(), book.getGenre(), book.getAuthor(), 1);
                     takenBook.setId(book.getId());
                     clientBooks.add(takenBook);
                     client.setTakenBooks(clientBooks);
-                    manager.merge(client);
-                    manager.merge(book);
-                    transaction.commit();
+
+                    bookManager.merge(book);
+
+                    bookTransaction.commit();
                     return true;
                 } catch (Exception e) {
-                    transaction.rollback();
+                    bookTransaction.rollback();
                     return false;
                 } finally {
-                    manager.close();
+                    bookManager.close();
                 }
             }
             return false;
@@ -62,10 +63,11 @@ public class BookDao implements IDao<Book> {
 
     public boolean returnBook(Book book, Client client) {
 
-        EntityManager manager = factory.createEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
-        book = manager.find(Book.class, book.getId());
-        client = manager.find(Client.class, client.getId());
+        EntityManager bookManager = factory.createEntityManager();
+        EntityTransaction transaction = bookManager.getTransaction();
+
+        book = bookManager.find(Book.class, book.getId());
+        client = bookManager.find(Client.class, client.getId());
 
         List<Book> takenBooks = client.getTakenBooks();
         if (takenBooks.contains(book)) {
@@ -78,15 +80,14 @@ public class BookDao implements IDao<Book> {
                 transaction.begin();
                 book.setBookCount(book.getBookCount() + 1);
                 client.setHistory(clientBooks);
-                manager.merge(book);
-                manager.merge(client);
+                bookManager.merge(book);
                 transaction.commit();
                 return true;
             } catch (Exception e) {
                 transaction.rollback();
                 return false;
             } finally {
-                manager.close();
+                bookManager.close();
             }
 
         }

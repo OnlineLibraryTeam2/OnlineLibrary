@@ -73,28 +73,23 @@ public class BookDaoTest {
 
     @Test
     public void takeBook() throws Exception {
-        Book book  = new Book("Java8", 2010, "Technical", author, 5);
+        Book book  = new Book("Java10", 2012, "Technical", author, 3);
         generalService.registration(client);
-        //client = generalService.findClientByMail(client.getLoginMail());
+        client = generalService.findClientByMail(client.getLoginMail());
         assertTrue(bookDao.add(book));
-        assertTrue(bookDao.takeBook(book, client));
+        book = generalService.searchBookAuthor(author).get(0);
+        assertTrue(generalService.takeBook(book, client));
         List<Book> ourAddedBook = bookDao.searchBookTitle(book.getTitle());
-        //assertEquals(1, ourAddedBook.size());
-        int addedBookCount = ourAddedBook.get(0).getBookCount();
-        assertEquals(book.getBookCount() - 1, addedBookCount);
         assertTrue(bookDao.delete(book));
     }
-GeneralService service = new GeneralService(factory);
+
     @Test
     public void returnBook() throws Exception {
         Book book  = new Book("Java8", 2010, "Technical", author, 5);
         generalService.registration(client);
         assertTrue(bookDao.add(book));
         assertTrue(bookDao.takeBook(book, client));
-        List<Book> ourTakenBook = bookDao.searchBookTitle(book.getTitle());
-        assertEquals(1, ourTakenBook.size());
-        int addedBookCount = ourTakenBook.get(0).getBookCount();
-        assertEquals(book.getBookCount() - 1, addedBookCount);
+
         assertTrue(bookDao.returnBook(book, client));
         List<Book> ourReturnedBook = bookDao.searchBookTitle(book.getTitle());
         assertEquals(5, ourReturnedBook.get(0).getBookCount());

@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -22,9 +23,24 @@ public class Book {
     @Column
     private int bookCount;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
+
+    @ManyToMany
+    @JoinTable(name = "client_history",
+            joinColumns={@JoinColumn(name="book_id", referencedColumnName="id")},
+            inverseJoinColumns=@JoinColumn(name="client_id", referencedColumnName="id"))
+    private List<Client> history;
+
+    @ManyToMany
+    @JoinTable(
+            name="taken_books",
+            joinColumns={@JoinColumn(name="book_id", referencedColumnName="id")},
+            inverseJoinColumns=@JoinColumn(name="client_id", referencedColumnName="id")
+
+           )
+    private List<Client> clients;
 
     public Book() {
     }
@@ -83,6 +99,22 @@ public class Book {
 
     public int getBookCount() {
         return bookCount;
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    public List<Client> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<Client> history) {
+        this.history = history;
     }
 
     @Override
