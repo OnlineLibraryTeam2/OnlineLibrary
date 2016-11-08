@@ -3,6 +3,12 @@ package dao;
 
 import model.Author;
 import model.Book;
+import model.Client;
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,117 +20,50 @@ import java.util.List;
  * Created by student on 11/1/16.
  * Author DAO implementation.
  */
+@Component
 public class AuthorDao implements IDao<Author> {
 
-    private EntityManagerFactory factory;
-
-    public AuthorDao(EntityManagerFactory factory) {
-        this.factory = factory;
-    }
-
-    public List<Author> authorsList() {
-        EntityManager entityManager = factory.createEntityManager();
-
-        try {
-            TypedQuery<Author> typedQuery = entityManager.createQuery(
-                    "SELECT author FROM Author author", Author.class);
-
-            return typedQuery.getResultList();
-        }
-        finally {
-            entityManager.close();
-        }
-    }
-
-    public List<Book> searchByAuthor(Author author) {
-        EntityManager entityManager = factory.createEntityManager();
-
-        try {
-            author = entityManager.find(Author.class, author.getId());
-            return author.getBookList();
-        }
-        finally {
-            entityManager.close();
-        }
-    }
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Override
     public boolean add(Author author) {
-        if(author != null) {
-            EntityManager entityManager = factory.createEntityManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
-
-            try {
-                entityTransaction.begin();
-                entityManager.persist(author);
-                entityTransaction.commit();
-
-                return true;
-            } catch (Exception e) {
-                entityTransaction.rollback();
-
-                return false;
-            }
-            finally {
-                entityManager.close();
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean update(Author author) {
-        if(author != null) {
-            EntityManager entityManager = factory.createEntityManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
-
-            Author lookupAuthor = entityManager.find(Author.class, author.getId());
-
-            try {
-                entityTransaction.begin();
-                lookupAuthor.setName(author.getName());
-                lookupAuthor.setSurname(author.getSurname());
-                lookupAuthor.setBookList(author.getBookList());
-                entityManager.merge(lookupAuthor);
-                entityTransaction.commit();
-
-                return true;
-            } catch (Exception e) {
-                entityTransaction.rollback();
-
-                return false;
-            }
-            finally {
-                entityManager.close();
-            }
-        }
-        return false;
+        sessionFactory.getCurrentSession().save(author);
+        return true;
     }
 
     @Override
     public boolean delete(Author author) {
-        if(author != null) {
-            EntityManager entityManager = factory.createEntityManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
+        sessionFactory.getCurrentSession().delete(author);
+        return true;
+    }
 
-            author = entityManager.find(Author.class, author.getId());
+    public Author findAuthor(Author author){
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Author.class);
+        criteria.add(Restrictions.eq("name", author.getName()));
+        criteria.add(Restrictions.eq("surname", author.getSurname()));
 
-            try {
-                entityTransaction.begin();
-                entityManager.remove(author);
-                entityTransaction.commit();
 
-                return true;
-            } catch (Exception e) {
-                entityTransaction.rollback();
+        return (Author) criteria.uniqueResult();
+    }
 
-                return false;
-            }
-            finally {
-                entityManager.close();
+
+
+    public List<Author> authorsList() {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Author.class);
+        return criteria.list();
+    }
+
+    public List<Book> searchByAuthor(Author author) {
+        List<Author> authors = authorsList();
+
+        for (Author current: authors) {
+            if(author.equals(current)){
+                return current.getBookList();
             }
         }
-        return false;
+
+        return null;
     }
 
 }

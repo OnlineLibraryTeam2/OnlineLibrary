@@ -16,14 +16,13 @@ import static org.junit.Assert.*;
  * Created by student on 16.2.11.
  */
 public class ClientDaoTest {
-    private static EntityManagerFactory factory;
+
     private static ClientDao clientDao;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        factory = Persistence.createEntityManagerFactory("hibernate-unit");
-        clientDao  = new ClientDao(factory);
 
+        clientDao  = new ClientDao();
     }
 
 
@@ -115,7 +114,7 @@ public class ClientDaoTest {
         assertTrue(clientDao.add(client));
         client.setName("Ivan1");
         client.setAge(33);
-        assertTrue(clientDao.update(client));
+        assertTrue(clientDao.add(client));
         Client clients = clientDao.findClientByMail(client.getLoginMail());
         assertEquals(client, clients);
         assertTrue(clientDao.delete(client));
@@ -131,7 +130,6 @@ public class ClientDaoTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        factory.close();
         clientDao = null;
     }
 

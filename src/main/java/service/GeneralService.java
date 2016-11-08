@@ -6,8 +6,10 @@ import dao.ClientDao;
 import model.Author;
 import model.Book;
 import model.Client;
+import org.hibernate.ejb.EntityManagerFactoryImpl;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.List;
 
 /**
@@ -18,19 +20,14 @@ public class GeneralService {
     private AuthorDao authorDao;
     private BookDao bookDao;
     private ClientDao clientDao;
-    private EntityManagerFactory factory;
 
-    public GeneralService(EntityManagerFactory factory) {
-        this.factory = factory;
-        this.authorDao = new AuthorDao(factory);
-        this.bookDao = new BookDao(factory);
-        this.clientDao = new ClientDao(factory);
+
+    public GeneralService() {
+        this.authorDao = new AuthorDao();
+        //this.bookDao = new BookDao();
+        this.clientDao = new ClientDao();
     }
 
-    public boolean updateClientInfo(Client client) {
-
-        return clientDao.update(client);
-    }
 
     public boolean deleteClient(Client client) {
         return clientDao.delete(client);
@@ -78,9 +75,6 @@ public class GeneralService {
         return authorDao.delete(author);
     }
 
-    public boolean updateAuthorInfo(Author author) {
-        return authorDao.update(author);
-    }
 
     public List<Author> getAllAuthors(){
         return authorDao.authorsList();

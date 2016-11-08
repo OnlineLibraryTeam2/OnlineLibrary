@@ -18,14 +18,13 @@ import static org.junit.Assert.*;
  * Created by student on 16.2.11.
  */
 public class AuthorDaoTest {
-    private static EntityManagerFactory factory;
+
     private static AuthorDao authorDao;
     private static Author author;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        factory = Persistence.createEntityManagerFactory("hibernate-unit");
-        authorDao = new AuthorDao(factory);
+        authorDao = new AuthorDao();
     }
 
     @Before
@@ -75,7 +74,7 @@ public class AuthorDaoTest {
         assertTrue(authorDao.add(author));
         author.setName("Rob");
         author.setSurname("Kenzie");
-        assertTrue(authorDao.update(author));
+        assertTrue(authorDao.add(author));
         List<Author> authors = authorDao.authorsList();
         assertEquals(1, authors.size());
         assertEquals(author, authors.get(0));
@@ -109,8 +108,8 @@ public class AuthorDaoTest {
 
     @Test
     public void searchByAuthor() throws Exception {
-        BookDao bookDao = new BookDao(factory);
-        AuthorDao authorDao = new AuthorDao(factory);
+        BookDao bookDao = new BookDao();
+        AuthorDao authorDao = new AuthorDao();
 
         assertTrue(authorDao.add(author));
         List<Author> authors =  authorDao.authorsList();
@@ -145,7 +144,6 @@ public class AuthorDaoTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        factory.close();
         authorDao = null;
 
     }

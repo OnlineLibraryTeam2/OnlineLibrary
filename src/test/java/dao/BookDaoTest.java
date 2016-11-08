@@ -19,22 +19,25 @@ import static org.junit.Assert.*;
  */
 public class BookDaoTest {
 
-    private static EntityManagerFactory factory;
+
     private static BookDao bookDao;
+    private static AuthorDao authorDao;
+    private static ClientDao clientDao;
     private static Client client;
     private static Author author;
-    private static GeneralService generalService;
+
 
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        factory = Persistence.createEntityManagerFactory("hibernate-unit");
         client  = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
-        generalService = new GeneralService(factory);
-        generalService.addAuthor("Fedya", "Vasilyev");
-        author = generalService.getAllAuthors().get(0);
-        bookDao = new BookDao(factory);
+        author = new Author("Fedya", "Vasilyev");
+        authorDao.add(author);
+        clientDao.add(client);
+        author = authorDao.findAuthor(author);
+        client = clientDao.findClientByMail(client.getLoginMail());
+        bookDao = new BookDao();
     }
 
     @Test
@@ -53,7 +56,7 @@ public class BookDaoTest {
         assertTrue(bookDao.add(book));
         book.setTitle("Java9");
         book.setYear(2012);
-        assertTrue(bookDao.update(book));
+        assertTrue(bookDao.add(book));
         List<Book> books = bookDao.searchBookTitle(book.getTitle());
         assertEquals(1, books.size());
         assertEquals(book, books.get(0));
@@ -74,11 +77,10 @@ public class BookDaoTest {
     @Test
     public void takeBook() throws Exception {
         Book book  = new Book("Java10", 2012, "Technical", author, 3);
-        generalService.registration(client);
-        client = generalService.findClientByMail(client.getLoginMail());
+
         assertTrue(bookDao.add(book));
-        book = generalService.searchBookAuthor(author).get(0);
-        assertTrue(generalService.takeBook(book, client));
+        book = authorDao.searchByAuthor(author).get(0);
+        assertTrue(bookDao.takeBook(book, client));
         List<Book> ourAddedBook = bookDao.searchBookTitle(book.getTitle());
         assertTrue(bookDao.delete(book));
     }
@@ -86,7 +88,7 @@ public class BookDaoTest {
     @Test
     public void returnBook() throws Exception {
         Book book  = new Book("Java8", 2010, "Technical", author, 5);
-        generalService.registration(client);
+
         assertTrue(bookDao.add(book));
         assertTrue(bookDao.takeBook(book, client));
 
@@ -184,8 +186,10 @@ public class BookDaoTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        factory.close();
         bookDao = null;
+        clientDao = null;
+        authorDao = null;
+        author = null;
         client = null;
     }
 

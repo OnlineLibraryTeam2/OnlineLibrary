@@ -1,225 +1,75 @@
 package dao;
 
 import model.Client;
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
-/**
- * Created by student on 11/1/16.
- * Client DAO implementation.
- */
+@Component
 public class ClientDao implements IDao<Client> {
 
-    private EntityManagerFactory factory;
-
-    public ClientDao(EntityManagerFactory factory) {
-        this.factory = factory;
-    }
-
-    public Client signIn(String loginMail, String password) {
-        if ((loginMail != null && password != null) &&
-                (!loginMail.equals("") && !password.equals(""))) {
-
-            EntityManager entityManager = factory.createEntityManager();
-
-            try {
-                TypedQuery<Client> typedQuery = entityManager.createQuery(
-                        "SELECT c FROM Client c WHERE c.loginMail =:loginMail" +
-                        " AND c.password =:password", Client.class);
-
-                typedQuery.setParameter("loginMail", loginMail);
-                typedQuery.setParameter("password", password);
-
-                return typedQuery.getSingleResult();
-
-            } finally {
-                entityManager.close();
-            }
-        }
-
-        return null;
-    }
-
-    public Client findClientByMail(String mailClient) {
-        if (mailClient != null && !mailClient.equals("")) {
-            EntityManager entityManager = factory.createEntityManager();
-
-            try {
-                TypedQuery<Client> typedQuery = entityManager.createQuery(
-                        "SELECT c FROM Client c WHERE c.loginMail =:mailClient", Client.class);
-
-                typedQuery.setParameter("mailClient", mailClient);
-                return typedQuery.getSingleResult();
-            } finally {
-                entityManager.close();
-            }
-        }
-        return null;
-    }
-
-    public List<Client> showAllClients() {
-        EntityManager entityManager = factory.createEntityManager();
-
-        try {
-            TypedQuery<Client> typedQuery = entityManager.createQuery("SELECT c FROM Client c", Client.class);
-
-            return typedQuery.getResultList();
-        } finally {
-            entityManager.close();
-        }
-    }
-
-    public List<Client> showBlacklist() {
-        EntityManager entityManager = factory.createEntityManager();
-
-        try {
-            TypedQuery<Client> typedQuery = entityManager.createQuery(
-                    "SELECT c FROM Client c WHERE c.blackList =:result", Client.class);
-
-            typedQuery.setParameter("result", true);
-            return typedQuery.getResultList();
-        } finally {
-            entityManager.close();
-        }
-    }
-
-    public boolean addBlacklist(Client client) {
-        if (client != null) {
-            EntityManager entityManager = factory.createEntityManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
-
-            client = entityManager.find(Client.class, client.getId());
-
-            try {
-                entityTransaction.begin();
-                client.setBlackList(true);
-                entityManager.merge(client);
-                entityTransaction.commit();
-
-                return true;
-            } catch (Exception e) {
-                entityTransaction.rollback();
-
-                return false;
-            } finally {
-                entityManager.close();
-            }
-        }
-
-        return false;
-    }
-
-    public boolean deleteFromBlacklist(Client client) {
-        if (client != null) {
-            EntityManager entityManager = factory.createEntityManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
-
-            client = entityManager.find(Client.class, client.getId());
-
-            try {
-                entityTransaction.begin();
-                client.setBlackList(false);
-                entityManager.merge(client);
-                entityTransaction.commit();
-
-                return true;
-            } catch (Exception e) {
-                entityTransaction.rollback();
-
-                return false;
-            } finally {
-                entityManager.close();
-            }
-        }
-
-        return false;
-    }
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Override
     public boolean add(Client client) {
-        if (client != null) {
-            EntityManager entityManager = factory.createEntityManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
-
-            try {
-                entityTransaction.begin();
-                entityManager.persist(client);
-                entityTransaction.commit();
-
-                return true;
-            } catch (Exception e) {
-                entityTransaction.rollback();
-
-                return false;
-            } finally {
-                entityManager.close();
-            }
-        }
-
-        return false;
+        sessionFactory.getCurrentSession().save(client);
+        return true;
     }
 
-    @Override
-    public boolean update(Client client) {
-        if (client != null) {
-            EntityManager entityManager = factory.createEntityManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
-
-            Client lookupClient = entityManager.find(Client.class, client.getId());
-
-            try {
-                entityTransaction.begin();
-                lookupClient.setName(client.getName());
-                lookupClient.setSurname(client.getSurname());
-                lookupClient.setAge(client.getAge());
-                lookupClient.setPhoneNumber(client.getPhoneNumber());
-                lookupClient.setLoginMail(client.getLoginMail());
-                lookupClient.setPassword(client.getPassword());
-                lookupClient.setBlackList(client.isBlackList());
-                lookupClient.setHistory(client.getHistory());
-                lookupClient.setTakenBooks(client.getTakenBooks());
-                entityManager.merge(client);
-                entityTransaction.commit();
-
-                return true;
-            } catch (Exception e) {
-                entityTransaction.rollback();
-
-                return false;
-            } finally {
-                entityManager.close();
-            }
-        }
-        return false;
-    }
 
     @Override
     public boolean delete(Client client) {
-        if (client != null) {
-            EntityManager entityManager = factory.createEntityManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
-
-            client = entityManager.find(Client.class, client.getId());
-
-            try {
-                entityTransaction.begin();
-                entityManager.remove(client);
-                entityTransaction.commit();
-
-                return true;
-            } catch (Exception e) {
-                entityTransaction.rollback();
-
-                return false;
-            } finally {
-                entityManager.close();
-            }
-        }
-        return false;
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
+        criteria.add(Restrictions.eq("id", client.getId()));
+        sessionFactory.getCurrentSession().delete(client);
+        return true;
     }
+
+
+    public Client signIn(String loginMail, String password) {
+
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
+        criteria.add(Restrictions.eq("loginMail", loginMail));
+        criteria.add(Restrictions.eq("password", password));
+
+        return (Client) criteria.uniqueResult();
+
+    }
+
+    public Client findClientByMail(String mailClient) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
+        criteria.add(Restrictions.eq("loginMail", mailClient));
+
+        return (Client) criteria.uniqueResult();
+    }
+
+    public List<Client> showAllClients() {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
+        return criteria.list();
+    }
+
+    public List<Client> showBlacklist() {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
+        criteria.add(Restrictions.eq("blackList", true));
+
+        return criteria.list();
+    }
+
+    public boolean addBlacklist(Client client) {
+        client.setBlackList(true);
+        return add(client);
+    }
+
+    public boolean deleteFromBlacklist(Client client) {
+        client.setBlackList(false);
+        return add(client);
+    }
+
+
 
 }
