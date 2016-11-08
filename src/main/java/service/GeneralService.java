@@ -3,30 +3,33 @@ package service;
 import dao.AuthorDao;
 import dao.BookDao;
 import dao.ClientDao;
+
 import model.Author;
 import model.Book;
 import model.Client;
 import org.hibernate.ejb.EntityManagerFactoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
  * Created by alexp on 16.7.11.
  */
+@Component
 public class GeneralService {
 
+    @Autowired
     private AuthorDao authorDao;
+
+    @Autowired
     private BookDao bookDao;
+
+    @Autowired
     private ClientDao clientDao;
-
-
-    public GeneralService() {
-        this.authorDao = new AuthorDao();
-        //this.bookDao = new BookDao();
-        this.clientDao = new ClientDao();
-    }
 
 
     public boolean deleteClient(Client client) {
@@ -63,10 +66,6 @@ public class GeneralService {
         return bookDao.delete(book);
     }
 
-    public boolean updateBookInfo(Book book) {
-        return bookDao.update(book);
-    }
-
     public boolean addAuthor(String name, String surname) {
         return authorDao.add(new Author(name, surname));
     }
@@ -76,7 +75,7 @@ public class GeneralService {
     }
 
 
-    public List<Author> getAllAuthors(){
+    public List<Author> getAllAuthors() {
         return authorDao.authorsList();
     }
 
@@ -116,3 +115,5 @@ public class GeneralService {
         return bookDao.showAllBooks();
     }
 }
+
+

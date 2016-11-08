@@ -4,6 +4,9 @@ import model.Author;
 import model.Book;
 import model.Client;
 import org.junit.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import spring_config.SpringConfig;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -21,10 +24,14 @@ public class AuthorDaoTest {
 
     private static AuthorDao authorDao;
     private static Author author;
+    private static BookDao bookDao;
+    private static ApplicationContext context;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        authorDao = new AuthorDao();
+        context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        authorDao = context.getBean(AuthorDao.class);
+        bookDao = context.getBean(BookDao.class);
     }
 
     @Before
@@ -108,8 +115,6 @@ public class AuthorDaoTest {
 
     @Test
     public void searchByAuthor() throws Exception {
-        BookDao bookDao = new BookDao();
-        AuthorDao authorDao = new AuthorDao();
 
         assertTrue(authorDao.add(author));
         List<Author> authors =  authorDao.authorsList();
