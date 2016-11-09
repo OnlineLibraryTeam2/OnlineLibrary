@@ -7,15 +7,12 @@ import model.Book;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.validator.constraints.Range;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import spring_config.SpringConfig;
+
 
 import javax.persistence.EntityManager;
+
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -28,8 +25,10 @@ import java.util.List;
 @Transactional
 public class AuthorDaoImpl implements AuthorDao {
 
-    @Autowired
+
     private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager manager;
 
     public AuthorDaoImpl() {
 
@@ -37,7 +36,8 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public boolean add(Author author) {
-        sessionFactory.getCurrentSession().save(author);
+        manager.persist(author);
+        //sessionFactory.getCurrentSession().save(author);
         return true;
     }
 
@@ -49,7 +49,8 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public boolean delete(Author author) {
-        sessionFactory.getCurrentSession().delete(author);
+        author = manager.find(Author.class, author.getId());
+        manager.remove(author);
         return true;
     }
 

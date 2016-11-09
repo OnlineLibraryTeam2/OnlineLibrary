@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +26,10 @@ import java.util.List;
 @Transactional
 public class BookDaoImpl implements BookDao {
 
-    @Autowired
+
     private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager manager;
 
     public BookDaoImpl() {
     }
@@ -33,7 +37,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public boolean add(Book book) {
-        sessionFactory.getCurrentSession().save(book);
+        manager.persist(book);
         return true;
     }
 
@@ -45,8 +49,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public boolean delete(Book book) {
-        sessionFactory.getCurrentSession().delete(book);
-
+       manager.remove(book);
         return true;
     }
 

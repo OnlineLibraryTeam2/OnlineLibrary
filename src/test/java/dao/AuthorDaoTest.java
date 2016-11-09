@@ -5,11 +5,15 @@ import dao.interfaces.BookDao;
 import model.Author;
 import model.Book;
 import org.junit.*;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import service.GeneralService;
-import spring_config.SpringConfig;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import service.GeneralService;
+
+
+import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +23,9 @@ import static org.junit.Assert.*;
 /**
  * Created by student on 16.2.11.
  */
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:app-test-context.xml")
 public class AuthorDaoTest {
 
     /*private static AuthorDao authorDao;
@@ -26,14 +33,21 @@ public class AuthorDaoTest {
 
     private static GeneralService generalService;
     private static Author author;
-    private static ApplicationContext context;
 
-    @BeforeClass
+
+
+
+   /* @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        context =  new ClassPathXmlApplicationContext("app-context.xml");
         generalService = context.getBean(GeneralService.class);
 
-    }
+    }*/
+
+    @Autowired
+    private EntityManagerFactory factory;
+    @Autowired
+    private AuthorDao authorDao;
 
     @Before
     public void setUp() throws Exception {
@@ -48,10 +62,10 @@ public class AuthorDaoTest {
     @Test
     public void add() throws Exception {
 
-        assertTrue(generalService.addAuthor(author));
-        Author authorFromDb = generalService.findAuthor(author);
+        assertTrue(authorDao.add(author));
+        Author authorFromDb = authorDao.findAuthor(author);
         assertEquals(author, authorFromDb);
-        assertTrue(generalService.deleteAuthor(author));
+       // assertTrue(generalService.deleteAuthor(author));
     }
 
     @Test

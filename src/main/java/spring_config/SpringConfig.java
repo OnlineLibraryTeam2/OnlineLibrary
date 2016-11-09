@@ -85,6 +85,8 @@ public class SpringConfig {
         return sessionFactoryBean.getObject();
     }
 
+
+
     @Bean
     public PlatformTransactionManager transactionManager(SessionFactory sessionFactory) {
         return new HibernateTransactionManager(sessionFactory);

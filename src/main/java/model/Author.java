@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "authors")
 public class Author extends Person{
 
-    @OneToMany(mappedBy = "author", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "author", cascade = {CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Book> bookList;
 
     public Author() {

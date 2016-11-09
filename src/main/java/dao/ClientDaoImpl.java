@@ -15,7 +15,7 @@ import java.util.List;
 @Transactional
 public class ClientDaoImpl implements ClientDao {
 
-    @Autowired
+
     private SessionFactory sessionFactory;
 
     public ClientDaoImpl() {
