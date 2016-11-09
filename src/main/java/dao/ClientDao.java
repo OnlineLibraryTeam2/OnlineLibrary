@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class ClientDao implements IDao<Client> {
     private SessionFactory sessionFactory;
 
     @Override
+    @Transactional
     public boolean add(Client client) {
         sessionFactory.getCurrentSession().save(client);
         return true;
@@ -23,6 +25,7 @@ public class ClientDao implements IDao<Client> {
 
 
     @Override
+    @Transactional
     public boolean delete(Client client) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
         criteria.add(Restrictions.eq("id", client.getId()));
@@ -30,7 +33,7 @@ public class ClientDao implements IDao<Client> {
         return true;
     }
 
-
+    @Transactional
     public Client signIn(String loginMail, String password) {
 
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
@@ -41,6 +44,7 @@ public class ClientDao implements IDao<Client> {
 
     }
 
+    @Transactional
     public Client findClientByMail(String mailClient) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
         criteria.add(Restrictions.eq("loginMail", mailClient));
@@ -48,11 +52,13 @@ public class ClientDao implements IDao<Client> {
         return (Client) criteria.uniqueResult();
     }
 
+    @Transactional
     public List<Client> showAllClients() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
         return criteria.list();
     }
 
+    @Transactional
     public List<Client> showBlacklist() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
         criteria.add(Restrictions.eq("blackList", true));
@@ -60,11 +66,13 @@ public class ClientDao implements IDao<Client> {
         return criteria.list();
     }
 
+    @Transactional
     public boolean addBlacklist(Client client) {
         client.setBlackList(true);
         return add(client);
     }
 
+    @Transactional
     public boolean deleteFromBlacklist(Client client) {
         client.setBlackList(false);
         return add(client);

@@ -3,9 +3,7 @@ package dao;
 import model.Client;
 import org.junit.*;
 
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 
 import java.util.LinkedList;
 import java.util.List;

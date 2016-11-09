@@ -4,10 +4,7 @@ import model.Author;
 import model.Book;
 import model.Client;
 import org.junit.*;
-import service.GeneralService;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import java.util.List;
 

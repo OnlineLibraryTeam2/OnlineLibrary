@@ -3,17 +3,13 @@ package dao;
 
 import model.Author;
 import model.Book;
-import model.Client;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -27,17 +23,20 @@ public class AuthorDao implements IDao<Author> {
     private SessionFactory sessionFactory;
 
     @Override
+    @Transactional
     public boolean add(Author author) {
         sessionFactory.getCurrentSession().save(author);
         return true;
     }
 
     @Override
+    @Transactional
     public boolean delete(Author author) {
         sessionFactory.getCurrentSession().delete(author);
         return true;
     }
 
+    @Transactional
     public Author findAuthor(Author author){
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Author.class);
         criteria.add(Restrictions.eq("name", author.getName()));
@@ -48,12 +47,13 @@ public class AuthorDao implements IDao<Author> {
     }
 
 
-
+    @Transactional
     public List<Author> authorsList() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Author.class);
         return criteria.list();
     }
 
+    @Transactional
     public List<Book> searchByAuthor(Author author) {
         List<Author> authors = authorsList();
 
