@@ -34,7 +34,6 @@ public class BookDaoImpl implements BookDao {
     @Override
     public boolean add(Book book) {
         sessionFactory.getCurrentSession().save(book);
-
         return true;
     }
 

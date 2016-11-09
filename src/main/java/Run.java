@@ -12,6 +12,6 @@ public class Run {
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
         GeneralService service = context.getBean(GeneralService.class);
-        service.addAuthor("Vasya", "Pupkin");
+        //service.addAuthor("Vasya", "Pupkin");
     }
 }

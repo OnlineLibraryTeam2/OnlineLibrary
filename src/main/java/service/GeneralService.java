@@ -51,22 +51,28 @@ public class GeneralService {
         return clientDao.deleteFromBlacklist(client);
     }
 
-    public boolean addBook(String title, int year, String genre, Author author, int bookCount) {
-        Book book = new Book(title, year, genre, author, bookCount);
+    public boolean addBook(Book book) {
 
         return bookDao.add(book);
     }
 
     public boolean deleteBook(Book book) {
+
         return bookDao.delete(book);
     }
 
-    public boolean addAuthor(String name, String surname) {
-        return authorDao.add(new Author(name, surname));
+
+
+    public boolean addAuthor(Author author) {
+        return authorDao.add(author);
     }
 
     public boolean deleteAuthor(Author author) {
         return authorDao.delete(author);
+    }
+
+    public Author findAuthor(Author author){
+        return authorDao.findAuthor(author);
     }
 
 

@@ -7,6 +7,7 @@ import model.Book;
 import org.junit.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import service.GeneralService;
 import spring_config.SpringConfig;
 
 import java.util.ArrayList;
@@ -20,14 +21,17 @@ import static org.junit.Assert.*;
  */
 public class AuthorDaoTest {
 
-    private static AuthorDao authorDao;
+    /*private static AuthorDao authorDao;
+    private static BookDao bookDao;*/
+
+    private static GeneralService generalService;
     private static Author author;
-    private static BookDao bookDao;
     private static ApplicationContext context;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        generalService = context.getBean(GeneralService.class);
         /*authorDao = context.getBean(AuthorDaoImpl.class);
         bookDao = context.getBean(BookDaoImpl.class);*/
     }
@@ -45,18 +49,14 @@ public class AuthorDaoTest {
     @Test
     public void add() throws Exception {
 
-        assertTrue(authorDao.add(author));
-        List<Author> authors = authorDao.authorsList();
-        assertFalse(authors.isEmpty());
-        assertEquals(1, authors.size());
-        assertEquals(author, authors.get(0));
-        assertTrue(authorDao.delete(author));
 
-        author = null;
-        assertFalse(authorDao.add(author));
+        assertTrue(generalService.addAuthor(author));
+        Author authorFromDb = generalService.findAuthor(author);
+        assertEquals(author, authorFromDb);
+
     }
 
-    @Test
+  /*  @Test
     public void add_same_author() throws Exception {
 
         assertTrue(authorDao.add(author));
@@ -144,10 +144,9 @@ public class AuthorDaoTest {
 
         assertTrue(authorDao.delete(author));
     }
-
+*/
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        authorDao = null;
-
+        generalService = null;
     }
 }
