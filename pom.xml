@@ -207,7 +207,7 @@
 					<target>${commons-dbcp.version}.8</target>
 				</configuration>
 			</plugin>
-			<!-- Jacoco coverage as maven task, to get results, run: 'mvn verify' and look results
+			<!-- Jacoco coverage as maven task, to get results, Run: 'mvn verify' and look results
 				at ../target/site/jacoco/index.html. Look more at: https://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/
 				-->
 			<plugin>

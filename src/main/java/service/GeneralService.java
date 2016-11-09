@@ -1,9 +1,6 @@
 package service;
 
-import dao.ClientDaoImpl;
 import dao.interfaces.AuthorDao;
-import dao.BookDaoImpl;
-
 import dao.interfaces.BookDao;
 import dao.interfaces.ClientDao;
 import model.Author;
@@ -27,31 +24,31 @@ public class GeneralService {
     private BookDao bookDao;
 
     @Autowired
-    private ClientDao clientDaoImpl;
+    private ClientDao clientDao;
 
 
     public boolean deleteClient(Client client) {
-        return clientDaoImpl.delete(client);
+        return clientDao.delete(client);
     }
 
     public Client findClientByMail(String mailClient) {
-        return clientDaoImpl.findClientByMail(mailClient);
+        return clientDao.findClientByMail(mailClient);
     }
 
     public List<Client> showClients() {
-        return clientDaoImpl.showAllClients();
+        return clientDao.showAllClients();
     }
 
     public List<Client> showBlackList() {
-        return clientDaoImpl.showBlacklist();
+        return clientDao.showBlacklist();
     }
 
     public boolean addBlackList(Client client) {
-        return clientDaoImpl.addBlacklist(client);
+        return clientDao.addBlacklist(client);
     }
 
     public boolean deleteBlackList(Client client) {
-        return clientDaoImpl.deleteFromBlacklist(client);
+        return clientDao.deleteFromBlacklist(client);
     }
 
     public boolean addBook(String title, int year, String genre, Author author, int bookCount) {
@@ -86,11 +83,11 @@ public class GeneralService {
     }
 
     public boolean registration(Client client) {
-        return clientDaoImpl.add(client);
+        return clientDao.add(client);
     }
 
     public Client signIn(String loginMail, String password) {
-        return clientDaoImpl.signIn(loginMail, password);
+        return clientDao.signIn(loginMail, password);
     }
 
     public List<Book> searchBookTitle(String title) {

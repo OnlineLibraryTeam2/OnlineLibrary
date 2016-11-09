@@ -6,10 +6,10 @@
     <persistence-unit name="hibernate-unit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-        <class>model.Author</class>
-        <class>model.Admin</class>
-        <class>model.Book</class>
-        <class>model.Client</class>
+        <class>lv.team2.model.Author</class>
+        <class>lv.team2.model.Admin</class>
+        <class>lv.team2.model.Book</class>
+        <class>lv.team2.model.Client</class>
 
         <properties>
             <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>

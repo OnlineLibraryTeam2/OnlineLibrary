@@ -23,7 +23,7 @@ import java.beans.PropertyVetoException;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan(basePackages = {"dao"})
+@ComponentScan(basePackages = {"dao", "service"})
 @EnableTransactionManagement
 public class SpringConfig {
 
