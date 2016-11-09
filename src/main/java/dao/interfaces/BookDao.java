@@ -18,6 +18,8 @@ public interface BookDao extends IDao<Book> {
 
     boolean returnBook(Book book, Client client);
 
+    Book findBook(Book book);
+
     List<Book> searchBookTitle(String title);
 
     List<Book> searchByYear(int year);

@@ -27,11 +27,15 @@ public class GeneralService {
     private ClientDao clientDao;
 
 
+    public boolean addClient(Client client) {
+        return clientDao.add(client);
+    }
+
     public boolean deleteClient(Client client) {
         return clientDao.delete(client);
     }
 
-    public boolean updateCLient(Client client){return clientDao.update(client);}
+    public boolean updateCLient(Client client) { return clientDao.update(client); }
 
     public Client findClientByMail(String mailClient) {
         return clientDao.findClientByMail(mailClient);
@@ -51,21 +55,6 @@ public class GeneralService {
 
     public boolean deleteBlackList(Client client) {
         return clientDao.deleteFromBlacklist(client);
-    }
-
-    public boolean addBook(Book book) {
-
-        return bookDao.add(book);
-    }
-
-    public boolean updateBook(Book book){
-
-        return bookDao.update(book);
-    }
-
-    public boolean deleteBook(Book book) {
-
-        return bookDao.delete(book);
     }
 
     public boolean addAuthor(Author author) {
@@ -89,6 +78,21 @@ public class GeneralService {
         return authorDao.authorsList();
     }
 
+    public boolean addBook(Book book) {
+
+        return bookDao.add(book);
+    }
+
+    public boolean updateBook(Book book){
+
+        return bookDao.update(book);
+    }
+
+    public boolean deleteBook(Book book) {
+
+        return bookDao.delete(book);
+    }
+
     public boolean takeBook(Book book, Client client) {
         return bookDao.takeBook(book, client);
     }
@@ -103,6 +107,10 @@ public class GeneralService {
 
     public Client signIn(String loginMail, String password) {
         return clientDao.signIn(loginMail, password);
+    }
+
+    public Book findBook(Book book){
+        return bookDao.findBook(book);
     }
 
     public List<Book> searchBookTitle(String title) {

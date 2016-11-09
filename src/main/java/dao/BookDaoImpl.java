@@ -76,6 +76,15 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
+    public Book findBook(Book book) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
+        criteria.add(Restrictions.eq("title", book.getTitle()));
+        criteria.add(Restrictions.eq("author", book.getAuthor()));
+
+        return (Book)criteria.uniqueResult();
+    }
+
+    @Override
     public List<Book> searchBookTitle(String title) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
         criteria.add(Restrictions.eq("title", title));
@@ -106,7 +115,4 @@ public class BookDaoImpl implements BookDao {
         return (List<Book>) criteria.list();
     }
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 }
