@@ -1,5 +1,8 @@
 package dao;
 
+import dao.interfaces.AuthorDao;
+import dao.interfaces.BookDao;
+import dao.interfaces.ClientDao;
 import model.Author;
 import model.Book;
 import model.Client;
@@ -14,12 +17,12 @@ import static org.junit.Assert.*;
  * Created by alexp on 16.1.11.
  * Amended by DP.
  */
-public class BookDaoTest {
+public class BookDaoImplTest {
 
 
     private static BookDao bookDao;
     private static AuthorDao authorDao;
-    private static ClientDao clientDao;
+    private static ClientDao clientDaoImpl;
     private static Client client;
     private static Author author;
 
@@ -31,10 +34,10 @@ public class BookDaoTest {
         client  = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
         author = new Author("Fedya", "Vasilyev");
         authorDao.add(author);
-        clientDao.add(client);
+        clientDaoImpl.add(client);
         author = authorDao.findAuthor(author);
-        client = clientDao.findClientByMail(client.getLoginMail());
-        bookDao = new BookDao();
+        client = clientDaoImpl.findClientByMail(client.getLoginMail());
+        bookDao = new BookDaoImpl();
     }
 
     @Test
@@ -184,7 +187,7 @@ public class BookDaoTest {
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
         bookDao = null;
-        clientDao = null;
+        clientDaoImpl = null;
         authorDao = null;
         author = null;
         client = null;

@@ -1,5 +1,6 @@
 package dao;
 
+import dao.interfaces.ClientDao;
 import model.Client;
 import org.junit.*;
 
@@ -13,32 +14,32 @@ import static org.junit.Assert.*;
 /**
  * Created by student on 16.2.11.
  */
-public class ClientDaoTest {
+public class ClientDaoImplTest {
 
-    private static ClientDao clientDao;
+    private static ClientDao clientDaoImpl;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 
-        clientDao  = new ClientDao();
+        clientDaoImpl = new ClientDaoImpl();
     }
 
 
     @Test
     public void signIn() throws Exception {
         Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
-        assertTrue(clientDao.add(client));
-        assertEquals(client, clientDao.signIn(client.getLoginMail(),client.getPassword()));
-        assertTrue(clientDao.delete(client));
+        assertTrue(clientDaoImpl.add(client));
+        assertEquals(client, clientDaoImpl.signIn(client.getLoginMail(),client.getPassword()));
+        assertTrue(clientDaoImpl.delete(client));
     }
 
     @Test
     public void findClientByMail() throws Exception {
         Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
-        assertTrue(clientDao.add(client));
-        Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertTrue(clientDaoImpl.add(client));
+        Client clients = clientDaoImpl.findClientByMail(client.getLoginMail());
         assertEquals(client, clients);
-        assertTrue(clientDao.delete(client));
+        assertTrue(clientDaoImpl.delete(client));
     }
 
     @Test
@@ -48,11 +49,11 @@ public class ClientDaoTest {
         List<Client> clients = new LinkedList<>();
         clients.add(client);
         clients.add(client1);
-        assertTrue(clientDao.add(client));
-        assertTrue(clientDao.add(client1));
-        assertEquals(clients, clientDao.showAllClients());
-        assertTrue(clientDao.delete(client));
-        assertTrue(clientDao.delete(client1));
+        assertTrue(clientDaoImpl.add(client));
+        assertTrue(clientDaoImpl.add(client1));
+        assertEquals(clients, clientDaoImpl.showAllClients());
+        assertTrue(clientDaoImpl.delete(client));
+        assertTrue(clientDaoImpl.delete(client1));
     }
 
     @Test
@@ -64,71 +65,71 @@ public class ClientDaoTest {
         clients.add(client);
         clients.add(client1);
 
-        assertTrue(clientDao.add(client));
-        assertTrue(clientDao.add(client1));
-        assertTrue(clientDao.addBlacklist(client));
-        assertTrue(clientDao.addBlacklist(client1));
-        assertNotEquals(clients, clientDao.showBlacklist());
-        assertTrue(clientDao.delete(client));
-        assertTrue(clientDao.delete(client1));
+        assertTrue(clientDaoImpl.add(client));
+        assertTrue(clientDaoImpl.add(client1));
+        assertTrue(clientDaoImpl.addBlacklist(client));
+        assertTrue(clientDaoImpl.addBlacklist(client1));
+        assertNotEquals(clients, clientDaoImpl.showBlacklist());
+        assertTrue(clientDaoImpl.delete(client));
+        assertTrue(clientDaoImpl.delete(client1));
     }
 
     @Test
     public void addBlacklist() throws Exception {
         Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
-        assertTrue(clientDao.add(client));
-        assertTrue(clientDao.addBlacklist(client));
-        Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertTrue(clientDaoImpl.add(client));
+        assertTrue(clientDaoImpl.addBlacklist(client));
+        Client clients = clientDaoImpl.findClientByMail(client.getLoginMail());
         assertTrue(clients.isBlackList());
-        assertTrue(clientDao.delete(client));
+        assertTrue(clientDaoImpl.delete(client));
 
     }
 
     @Test
     public void deleteFromBlacklist() throws Exception {
         Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
-        assertTrue(clientDao.add(client));
-        assertTrue(clientDao.addBlacklist(client));
-        Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertTrue(clientDaoImpl.add(client));
+        assertTrue(clientDaoImpl.addBlacklist(client));
+        Client clients = clientDaoImpl.findClientByMail(client.getLoginMail());
         assertTrue(clients.isBlackList());
-        assertTrue(clientDao.deleteFromBlacklist(client));
-        clients = clientDao.findClientByMail(client.getLoginMail());
+        assertTrue(clientDaoImpl.deleteFromBlacklist(client));
+        clients = clientDaoImpl.findClientByMail(client.getLoginMail());
         assertFalse(clients.isBlackList());
-        assertTrue(clientDao.delete(client));
+        assertTrue(clientDaoImpl.delete(client));
     }
 
     @Test
     public void add() throws Exception {
         Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
-        assertTrue(clientDao.add(client));
-        Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertTrue(clientDaoImpl.add(client));
+        Client clients = clientDaoImpl.findClientByMail(client.getLoginMail());
         assertEquals(client, clients);
-        assertTrue(clientDao.delete(client));
+        assertTrue(clientDaoImpl.delete(client));
     }
 
     @Test
     public void update() throws Exception {
         Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
-        assertTrue(clientDao.add(client));
+        assertTrue(clientDaoImpl.add(client));
         client.setName("Ivan1");
         client.setAge(33);
-        assertTrue(clientDao.add(client));
-        Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertTrue(clientDaoImpl.add(client));
+        Client clients = clientDaoImpl.findClientByMail(client.getLoginMail());
         assertEquals(client, clients);
-        assertTrue(clientDao.delete(client));
+        assertTrue(clientDaoImpl.delete(client));
     }
 
     @Test(expected=NoResultException.class)
     public void delete() throws Exception {
         Client client = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
-        assertTrue(clientDao.add(client));
-        assertTrue(clientDao.delete(client));
-        Client clients = clientDao.findClientByMail(client.getLoginMail());
+        assertTrue(clientDaoImpl.add(client));
+        assertTrue(clientDaoImpl.delete(client));
+        Client clients = clientDaoImpl.findClientByMail(client.getLoginMail());
     }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        clientDao = null;
+        clientDaoImpl = null;
     }
 
 

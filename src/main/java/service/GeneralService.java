@@ -1,19 +1,17 @@
 package service;
 
-import dao.AuthorDao;
-import dao.BookDao;
-import dao.ClientDao;
+import dao.ClientDaoImpl;
+import dao.interfaces.AuthorDao;
+import dao.BookDaoImpl;
 
+import dao.interfaces.BookDao;
+import dao.interfaces.ClientDao;
 import model.Author;
 import model.Book;
 import model.Client;
-import org.hibernate.ejb.EntityManagerFactoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -29,31 +27,31 @@ public class GeneralService {
     private BookDao bookDao;
 
     @Autowired
-    private ClientDao clientDao;
+    private ClientDao clientDaoImpl;
 
 
     public boolean deleteClient(Client client) {
-        return clientDao.delete(client);
+        return clientDaoImpl.delete(client);
     }
 
     public Client findClientByMail(String mailClient) {
-        return clientDao.findClientByMail(mailClient);
+        return clientDaoImpl.findClientByMail(mailClient);
     }
 
     public List<Client> showClients() {
-        return clientDao.showAllClients();
+        return clientDaoImpl.showAllClients();
     }
 
     public List<Client> showBlackList() {
-        return clientDao.showBlacklist();
+        return clientDaoImpl.showBlacklist();
     }
 
     public boolean addBlackList(Client client) {
-        return clientDao.addBlacklist(client);
+        return clientDaoImpl.addBlacklist(client);
     }
 
     public boolean deleteBlackList(Client client) {
-        return clientDao.deleteFromBlacklist(client);
+        return clientDaoImpl.deleteFromBlacklist(client);
     }
 
     public boolean addBook(String title, int year, String genre, Author author, int bookCount) {
@@ -88,11 +86,11 @@ public class GeneralService {
     }
 
     public boolean registration(Client client) {
-        return clientDao.add(client);
+        return clientDaoImpl.add(client);
     }
 
     public Client signIn(String loginMail, String password) {
-        return clientDao.signIn(loginMail, password);
+        return clientDaoImpl.signIn(loginMail, password);
     }
 
     public List<Book> searchBookTitle(String title) {

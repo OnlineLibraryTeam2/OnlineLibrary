@@ -167,8 +167,13 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 			<version>${spring-boot-starter-web.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 	<build>
 		<plugins>
 			<!-- Allow tests to extend classes from main folder (org.AllUnitTests extends org.testSuite.AllTests
@@ -186,7 +191,6 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>src/test/java</source>
 								<source>src/main/java</source>
 							</sources>
 						</configuration>

@@ -1,10 +1,12 @@
-package dao;
+package dao.interfaces;
+
 
 /**
  * Created by alexp on 16.1.11.
  * IDAO main interface, typed.
  */
-interface IDao<T> {
+
+public interface IDao<T> {
 
     boolean add(T obj);
 

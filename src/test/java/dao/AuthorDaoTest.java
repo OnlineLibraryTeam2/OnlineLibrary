@@ -1,15 +1,13 @@
 package dao;
 
+import dao.interfaces.AuthorDao;
+import dao.interfaces.BookDao;
 import model.Author;
 import model.Book;
-import model.Client;
 import org.junit.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring_config.SpringConfig;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,8 +28,8 @@ public class AuthorDaoTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         context = new AnnotationConfigApplicationContext(SpringConfig.class);
-        authorDao = context.getBean(AuthorDao.class);
-        bookDao = context.getBean(BookDao.class);
+        /*authorDao = context.getBean(AuthorDaoImpl.class);
+        bookDao = context.getBean(BookDaoImpl.class);*/
     }
 
     @Before

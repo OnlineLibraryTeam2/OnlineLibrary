@@ -1,5 +1,6 @@
 package dao;
 
+import dao.interfaces.ClientDao;
 import model.Client;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -10,14 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
-public class ClientDao implements IDao<Client> {
+@Component("clientDao")
+@Transactional
+public class ClientDaoImpl implements ClientDao {
 
     @Autowired
     private SessionFactory sessionFactory;
 
+    public ClientDaoImpl() {
+    }
+
     @Override
-    @Transactional
     public boolean add(Client client) {
         sessionFactory.getCurrentSession().save(client);
         return true;
@@ -25,7 +29,6 @@ public class ClientDao implements IDao<Client> {
 
 
     @Override
-    @Transactional
     public boolean delete(Client client) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
         criteria.add(Restrictions.eq("id", client.getId()));
@@ -33,7 +36,7 @@ public class ClientDao implements IDao<Client> {
         return true;
     }
 
-    @Transactional
+    @Override
     public Client signIn(String loginMail, String password) {
 
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
@@ -44,7 +47,7 @@ public class ClientDao implements IDao<Client> {
 
     }
 
-    @Transactional
+    @Override
     public Client findClientByMail(String mailClient) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
         criteria.add(Restrictions.eq("loginMail", mailClient));
@@ -52,13 +55,13 @@ public class ClientDao implements IDao<Client> {
         return (Client) criteria.uniqueResult();
     }
 
-    @Transactional
+    @Override
     public List<Client> showAllClients() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
         return criteria.list();
     }
 
-    @Transactional
+    @Override
     public List<Client> showBlacklist() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Client.class);
         criteria.add(Restrictions.eq("blackList", true));
@@ -66,18 +69,15 @@ public class ClientDao implements IDao<Client> {
         return criteria.list();
     }
 
-    @Transactional
+    @Override
     public boolean addBlacklist(Client client) {
         client.setBlackList(true);
         return add(client);
     }
 
-    @Transactional
+    @Override
     public boolean deleteFromBlacklist(Client client) {
         client.setBlackList(false);
         return add(client);
     }
-
-
-
 }

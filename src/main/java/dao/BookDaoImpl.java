@@ -1,6 +1,8 @@
 package dao;
 
 
+import dao.interfaces.BookDao;
+import dao.interfaces.IDao;
 import model.Book;
 import model.Client;
 import org.hibernate.Criteria;
@@ -18,14 +20,18 @@ import java.util.List;
  * Amended 16.2.11, DP.
  */
 
-@Component
-public class BookDao implements IDao<Book> {
+@Component("bookDao")
+@Transactional
+public class BookDaoImpl implements BookDao {
 
     @Autowired
     private SessionFactory sessionFactory;
 
+    public BookDaoImpl() {
+    }
+
+
     @Override
-    @Transactional
     public boolean add(Book book) {
         sessionFactory.getCurrentSession().save(book);
 
@@ -33,14 +39,13 @@ public class BookDao implements IDao<Book> {
     }
 
     @Override
-    @Transactional
     public boolean delete(Book book) {
         sessionFactory.getCurrentSession().delete(book);
 
         return true;
     }
 
-    @Transactional
+    @Override
     public boolean takeBook(Book book, Client client) {
         Book clientBook = book;
         clientBook.setBookCount(1);
@@ -54,7 +59,7 @@ public class BookDao implements IDao<Book> {
         return true;
     }
 
-    @Transactional
+    @Override
     public boolean returnBook(Book book, Client client) {
         client.getTakenBooks().remove(book);
         client.setTakenBooks(client.getTakenBooks());
@@ -65,7 +70,7 @@ public class BookDao implements IDao<Book> {
         return true;
     }
 
-    @Transactional
+    @Override
     public List<Book> searchBookTitle(String title) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
         criteria.add(Restrictions.eq("title", title));
@@ -73,7 +78,7 @@ public class BookDao implements IDao<Book> {
         return (List<Book>) criteria.list();
     }
 
-    @Transactional
+    @Override
     public List<Book> searchByYear(int year) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
         criteria.add(Restrictions.eq("year", year));
@@ -81,7 +86,7 @@ public class BookDao implements IDao<Book> {
         return (List<Book>) criteria.list();
     }
 
-    @Transactional
+    @Override
     public List<Book> recommendedBooks(String genreBook) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
         criteria.add(Restrictions.eq("genre", genreBook));
@@ -89,11 +94,14 @@ public class BookDao implements IDao<Book> {
         return (List<Book>) criteria.list();
     }
 
-    @Transactional
+    @Override
     public List<Book> showAllBooks() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
 
         return (List<Book>) criteria.list();
     }
 
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 }

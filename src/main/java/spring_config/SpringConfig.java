@@ -10,10 +10,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
+
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
