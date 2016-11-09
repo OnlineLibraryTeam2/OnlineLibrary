@@ -32,8 +32,7 @@ public class AuthorDaoTest {
     public static void setUpBeforeClass() throws Exception {
         context = new AnnotationConfigApplicationContext(SpringConfig.class);
         generalService = context.getBean(GeneralService.class);
-        /*authorDao = context.getBean(AuthorDaoImpl.class);
-        bookDao = context.getBean(BookDaoImpl.class);*/
+
     }
 
     @Before
@@ -49,41 +48,29 @@ public class AuthorDaoTest {
     @Test
     public void add() throws Exception {
 
-
         assertTrue(generalService.addAuthor(author));
         Author authorFromDb = generalService.findAuthor(author);
         assertEquals(author, authorFromDb);
-
-    }
-
-  /*  @Test
-    public void add_same_author() throws Exception {
-
-        assertTrue(authorDao.add(author));
-        assertFalse(authorDao.add(author));
-        assertTrue(authorDao.delete(author));
+        assertTrue(generalService.deleteAuthor(author));
     }
 
     @Test
     public void delete() throws Exception {
 
-        assertTrue(authorDao.add(author));
-        assertTrue(authorDao.delete(author));
-        List<Author> authors = authorDao.authorsList();
-        assertEquals(0, authors.size());
+        assertTrue(generalService.addAuthor(author));
+        assertTrue(generalService.deleteAuthor(author));
+        assertNull(generalService.findAuthor(author));
     }
 
     @Test
     public void update() throws Exception {
 
-        assertTrue(authorDao.add(author));
+        assertTrue(generalService.addAuthor(author));
         author.setName("Rob");
         author.setSurname("Kenzie");
-        assertTrue(authorDao.add(author));
-        List<Author> authors = authorDao.authorsList();
-        assertEquals(1, authors.size());
-        assertEquals(author, authors.get(0));
-        assertTrue(authorDao.delete(author));
+        assertTrue(generalService.updateAuthor(author));
+        assertEquals(author, generalService.findAuthor(author));
+        assertTrue(generalService.deleteAuthor(author));
     }
 
     @Test
@@ -94,31 +81,25 @@ public class AuthorDaoTest {
         List<Author> expected = new ArrayList<>();
         Collections.addAll(expected, author, author1, author2);
 
-        assertTrue(authorDao.add(author));
-        assertTrue(authorDao.add(author1));
-        assertTrue(authorDao.add(author2));
+        generalService.addAuthor(author);
+        generalService.addAuthor(author1);
+        generalService.addAuthor(author2);
 
-        List<Author> authors = authorDao.authorsList();
+        List<Author> authors = generalService.getAllAuthors();
 
-        assertFalse(authors.isEmpty());
-        assertEquals(3, authors.size());
+        assertEquals(expected.size(), authors.size());
         assertTrue(authors.containsAll(expected));
 
-        expected.stream().forEach(author -> {
-            assertTrue(authorDao.delete(author));
+        expected.stream().forEach(currentAuthor -> {
+            assertTrue(generalService.deleteAuthor(currentAuthor));
         });
-
 
     }
 
     @Test
     public void searchByAuthor() throws Exception {
 
-        assertTrue(authorDao.add(author));
-        List<Author> authors =  authorDao.authorsList();
-        assertFalse(authors.isEmpty());
-        assertEquals(1, authors.size());
-        author = authors.get(0);
+        generalService.addAuthor(author);
 
         Book book1 = new Book("java1", 1, "Tech", author, 3);
         Book book2 = new Book("java2", 2, "Tech", author, 3);
@@ -127,24 +108,22 @@ public class AuthorDaoTest {
         List<Book> expected = new ArrayList<>();
         Collections.addAll(expected, book1, book2, book3);
 
-
-
-        expected.stream().forEach(book -> {
-            assertTrue(bookDao.add(book));
+        expected.stream().forEach(currentBook -> {
+            assertTrue(generalService.addBook(currentBook));
         });
 
-        List<Book> actual = authorDao.searchByAuthor(author);
+        List<Book> actual = generalService.searchBookAuthor(author);
 
         assertEquals(expected.size(), actual.size());
         assertTrue(actual.containsAll(expected));
 
-        expected.stream().forEach(book -> {
-            assertTrue(bookDao.delete(book));
-        });
+        /*expected.stream().forEach(currentBook -> {
+            assertTrue(generalService.deleteBook(currentBook));
+        });*/
 
-        assertTrue(authorDao.delete(author));
+        assertTrue(generalService.deleteAuthor(author));
     }
-*/
+
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
         generalService = null;

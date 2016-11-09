@@ -38,6 +38,12 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
+    public boolean update(Book book) {
+        sessionFactory.getCurrentSession().update(book);
+        return true;
+    }
+
+    @Override
     public boolean delete(Book book) {
         sessionFactory.getCurrentSession().delete(book);
 

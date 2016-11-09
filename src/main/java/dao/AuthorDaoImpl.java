@@ -42,6 +42,12 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
+    public boolean update(Author author) {
+        sessionFactory.getCurrentSession().update(author);
+        return true;
+    }
+
+    @Override
     public boolean delete(Author author) {
         sessionFactory.getCurrentSession().delete(author);
         return true;

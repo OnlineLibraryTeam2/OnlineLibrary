@@ -31,6 +31,8 @@ public class GeneralService {
         return clientDao.delete(client);
     }
 
+    public boolean updateCLient(Client client){return clientDao.update(client);}
+
     public Client findClientByMail(String mailClient) {
         return clientDao.findClientByMail(mailClient);
     }
@@ -56,15 +58,22 @@ public class GeneralService {
         return bookDao.add(book);
     }
 
+    public boolean updateBook(Book book){
+
+        return bookDao.update(book);
+    }
+
     public boolean deleteBook(Book book) {
 
         return bookDao.delete(book);
     }
 
-
-
     public boolean addAuthor(Author author) {
         return authorDao.add(author);
+    }
+
+    public boolean updateAuthor(Author author)  {
+        return authorDao.update(author);
     }
 
     public boolean deleteAuthor(Author author) {

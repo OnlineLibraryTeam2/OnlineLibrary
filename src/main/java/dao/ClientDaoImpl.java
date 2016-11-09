@@ -27,6 +27,12 @@ public class ClientDaoImpl implements ClientDao {
         return true;
     }
 
+    @Override
+    public boolean update(Client client) {
+        sessionFactory.getCurrentSession().update(client);
+        return true;
+    }
+
 
     @Override
     public boolean delete(Client client) {

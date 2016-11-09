@@ -13,6 +13,8 @@ public interface IDao<T> {
 
     boolean add(T obj);
 
+    boolean update(T obj);
+
     boolean delete(T obj);
 
 }
