@@ -10,7 +10,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import service.GeneralService;
-import spring_config.SpringConfig;
 
 import static org.junit.Assert.*;
 
@@ -33,20 +32,6 @@ public class BookDaoImplTest {
     private static Client client;
     private static Author author;*/
 
-
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-
-        context = new AnnotationConfigApplicationContext(SpringConfig.class);
-        service = context.getBean(GeneralService.class);
-        /*client  = new Client("Ivan", "Ivanov", 23, "371", "mail.com", "1234");
-        author = new Author("Fedya", "Vasilyev");
-        authorDao.add(author);
-        clientDaoImpl.add(client);
-        author = authorDao.findAuthor(author);
-        client = clientDaoImpl.findClientByMail(client.getLoginMail());
-        bookDao = new BookDaoImpl();*/
-    }
 
     @Before
     public void setUp() throws Exception {

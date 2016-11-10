@@ -26,9 +26,6 @@ import static org.junit.Assert.*;
 public class AuthorDaoTest {
 
     @Autowired
-    private EntityManagerFactory factory;
-
-    @Autowired
     private AuthorDao authorDao;
 
     @Autowired
@@ -66,6 +63,8 @@ public class AuthorDaoTest {
 
     @Test
     public void update() throws Exception {
+
+
 
         assertTrue(authorDao.add(author));
         author.setName("Rob");

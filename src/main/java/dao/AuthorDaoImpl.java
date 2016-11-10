@@ -30,10 +30,6 @@ public class AuthorDaoImpl implements AuthorDao {
     @PersistenceContext
     private EntityManager manager;
 
-    public AuthorDaoImpl() {
-
-    }
-
     @Override
     public boolean add(Author author) {
         manager.persist(author);

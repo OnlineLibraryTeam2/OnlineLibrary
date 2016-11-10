@@ -21,7 +21,6 @@
 		<hibernate-entitymanager.version>4.${commons-dbcp.version}.4.Final</hibernate-entitymanager.version>
 		<h2.version>${commons-dbcp.version}.4.${commons-dbcp.version}92</h2.version>
 		<spring-context.version>4.3.${commons-dbcp.version}.RELEASE</spring-context.version>
-		<spring-boot-starter-web.version>${commons-dbcp.version}.3.6.RELEASE</spring-boot-starter-web.version>
 		<commons-dbcp.version>1</commons-dbcp.version>
 	</properties>
 
@@ -33,13 +32,7 @@
 		</repository>
 	</repositories>
 	<dependencies>
-		<!--<dependency>
-			<groupId>team2</groupId>
-			<artifactId>OnlineLibrary</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/JTM.jar</systemPath>
-		</dependency>-->
+
 		<!-- JDBC exercise using MySQL -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -96,11 +89,7 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate-entitymanager.version}</version>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-1.0-api</artifactId>
-			<version>1.0.1.Final</version>
-		</dependency>-->
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -131,18 +120,6 @@
 			<version>${spring-context.version}</version>
 		</dependency>
 
-	<!--	<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-autoconfigure</artifactId>
-			<version>${spring-boot-starter-web.version}</version>
-		</dependency>-->
-
-		<!--<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-maven-plugin</artifactId>
-			<version>${spring-boot-starter-web.version}</version>
-		</dependency>-->
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
@@ -161,12 +138,6 @@
 			<version>${spring-context.version}</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!--<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<version>${spring-boot-starter-web.version}</version>
-		</dependency>-->
 
         <dependency>
             <groupId>junit</groupId>
