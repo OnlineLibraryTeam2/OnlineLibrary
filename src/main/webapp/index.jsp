@@ -10,7 +10,7 @@
 			var v=document.forms["loginform"]["mail"].value;
 			var z=document.forms["loginform"]["password"].value;
 			if (v=="admin" && z=="admin"){
-				var newWin = window.open("admin.html",
+				var newWin = window.open("WEB-INF/pages/admin.jsp",
 	  	 			"_self",
 	   				"width=100%,height=100%,resizable=yes,scrollbars=yes,status=yes"
 					)
@@ -49,7 +49,7 @@
 			<h1>To view books that are available for you, please sign in or register.</h1>
 		
 			
-				<form name="loginform" onsubmit="return validateLogin();" method="post" action="client.html">
+				<form name="loginform" onsubmit="return validateLogin();" method="post" action="WEB-INF/pages/client.jsp">
 				  Login:<br>
 				  <input type="text" name="mail" >
 				  <br>
@@ -61,7 +61,7 @@
 				</form>
 			
 			<ul class="filter">
-				<li><a href="register.html" >Register!</a></li>
+				<li><a href="WEB-INF/pages/register.jsp" >Register!</a></li>
 			</ul>
 
 		
