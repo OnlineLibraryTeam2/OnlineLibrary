@@ -5,15 +5,11 @@ import dao.interfaces.BookDao;
 import model.Author;
 import model.Book;
 import org.junit.*;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import service.GeneralService;
-
 
 import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
@@ -34,6 +30,9 @@ public class AuthorDaoTest {
 
     @Autowired
     private AuthorDao authorDao;
+
+    @Autowired
+    private BookDao bookDao;
 
     private static Author author;
 
@@ -57,23 +56,23 @@ public class AuthorDaoTest {
         assertTrue(authorDao.delete(author));
     }
 
-    /*@Test
+    @Test
     public void delete() throws Exception {
 
-        assertTrue(generalService.addAuthor(author));
-        assertTrue(generalService.deleteAuthor(author));
-        assertNull(generalService.findAuthor(author));
+        assertTrue(authorDao.add(author));
+        assertTrue(authorDao.delete(author));
+        assertEquals(0, authorDao.authorsList().size());
     }
 
     @Test
     public void update() throws Exception {
 
-        assertTrue(generalService.addAuthor(author));
+        assertTrue(authorDao.add(author));
         author.setName("Rob");
         author.setSurname("Kenzie");
-        assertTrue(generalService.updateAuthor(author));
-        assertEquals(author, generalService.findAuthor(author));
-        assertTrue(generalService.deleteAuthor(author));
+        assertTrue(authorDao.update(author));
+        assertEquals(author, authorDao.findAuthor(author));
+        assertTrue(authorDao.delete(author));
     }
 
     @Test
@@ -84,25 +83,25 @@ public class AuthorDaoTest {
         List<Author> expected = new ArrayList<>();
         Collections.addAll(expected, author, author1, author2);
 
-        generalService.addAuthor(author);
-        generalService.addAuthor(author1);
-        generalService.addAuthor(author2);
+        for (Author current: expected) {
+            authorDao.add(current);
+        }
 
-        List<Author> authors = generalService.getAllAuthors();
+        List<Author> authors = authorDao.authorsList();
 
         assertEquals(expected.size(), authors.size());
         assertTrue(authors.containsAll(expected));
 
-        expected.stream().forEach(currentAuthor -> {
-            assertTrue(generalService.deleteAuthor(currentAuthor));
-        });
+        for (Author current: expected) {
+            authorDao.delete(current);
+        }
 
     }
 
     @Test
     public void searchByAuthor() throws Exception {
 
-        generalService.addAuthor(author);
+        authorDao.add(author);
 
         Book book1 = new Book("java1", 1, "Tech", author, 3);
         Book book2 = new Book("java2", 2, "Tech", author, 3);
@@ -111,20 +110,16 @@ public class AuthorDaoTest {
         List<Book> expected = new ArrayList<>();
         Collections.addAll(expected, book1, book2, book3);
 
-        expected.stream().forEach(currentBook -> {
-            assertTrue(generalService.addBook(currentBook));
-        });
+        for (Book current: expected) {
+            bookDao.add(current);
+        }
 
-        List<Book> actual = generalService.searchBookAuthor(author);
+        List<Book> actual = authorDao.searchByAuthor(author);
 
         assertEquals(expected.size(), actual.size());
         assertTrue(actual.containsAll(expected));
 
-        *//*expected.stream().forEach(currentBook -> {
-            assertTrue(generalService.deleteBook(currentBook));
-        });*//*
-
-        assertTrue(generalService.deleteAuthor(author));
-    }*/
+        assertTrue(authorDao.delete(author));
+    }
 
 }

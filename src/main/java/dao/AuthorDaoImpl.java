@@ -62,15 +62,19 @@ public class AuthorDaoImpl implements AuthorDao {
         query.setParameter("name", author.getName());
         query.setParameter("surname", author.getSurname());
 
-        return query.getSingleResult();
+        author = query.getSingleResult();
+
+        return author;
     }
 
     @Override
     public List<Author> authorsList() {
 
         TypedQuery<Author> query =
-                manager.createNamedQuery("SELECT a FROM author a", Author.class);
-        return query.getResultList();
+                manager.createQuery("SELECT a FROM Author a", Author.class);
+
+        List<Author> authors = query.getResultList();
+        return authors;
     }
 
     @Override
