@@ -1,19 +1,16 @@
 package dao;
 
-import dao.interfaces.AuthorDao;
-import dao.interfaces.BookDao;
-import dao.interfaces.ClientDao;
 import model.Author;
 import model.Book;
 import model.Client;
 import org.junit.*;
+import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import service.GeneralService;
 import spring_config.SpringConfig;
-
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -21,6 +18,8 @@ import static org.junit.Assert.*;
  * Created by alexp on 16.1.11.
  * Amended by DP.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:app-test-context.xml")
 public class BookDaoImplTest {
 
     private static ApplicationContext context;

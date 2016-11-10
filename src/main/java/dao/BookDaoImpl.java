@@ -1,19 +1,16 @@
 package dao;
 
-
 import dao.interfaces.BookDao;
-import dao.interfaces.IDao;
 import model.Book;
 import model.Client;
 import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,30 +23,28 @@ import java.util.List;
 @Transactional
 public class BookDaoImpl implements BookDao {
 
-
-    private SessionFactory sessionFactory;
     @PersistenceContext
     private EntityManager manager;
-
-    public BookDaoImpl() {
-    }
-
 
     @Override
     public boolean add(Book book) {
         manager.persist(book);
+
         return true;
     }
 
     @Override
     public boolean update(Book book) {
-        sessionFactory.getCurrentSession().update(book);
+        manager.merge(book);
+
         return true;
     }
 
     @Override
     public boolean delete(Book book) {
-       manager.remove(book);
+        manager.find(Book.class, book);
+        manager.remove(book);
+
         return true;
     }
 
@@ -61,8 +56,8 @@ public class BookDaoImpl implements BookDao {
         List<Book> takenBook = new ArrayList<>();
         takenBook.add(clientBook);
         client.setTakenBooks(takenBook);
-        sessionFactory.getCurrentSession().update(book);
-        sessionFactory.getCurrentSession().update(client);
+        manager.merge(book);
+        manager.merge(client);
 
         return true;
     }
@@ -72,50 +67,50 @@ public class BookDaoImpl implements BookDao {
         client.getTakenBooks().remove(book);
         client.setTakenBooks(client.getTakenBooks());
         book.setBookCount(book.getBookCount() + 1);
-        sessionFactory.getCurrentSession().update(book);
-        sessionFactory.getCurrentSession().update(client);
+        manager.merge(book);
+        manager.merge(client);
 
         return true;
     }
 
     @Override
     public Book findBook(Book book) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
-        criteria.add(Restrictions.eq("title", book.getTitle()));
-        criteria.add(Restrictions.eq("author", book.getAuthor()));
+        TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.title=:title AND b.author=:author", Book.class);
+        query.setParameter("title", book.getTitle());
+        query.setParameter("author", book.getAuthor());
 
-        return (Book)criteria.uniqueResult();
+        return query.getSingleResult();
     }
 
     @Override
     public List<Book> searchBookTitle(String title) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
-        criteria.add(Restrictions.eq("title", title));
+        TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.title=:title", Book.class);
+        query.setParameter("title", title);
 
-        return (List<Book>) criteria.list();
+        return query.getResultList();
     }
 
     @Override
     public List<Book> searchByYear(int year) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
-        criteria.add(Restrictions.eq("year", year));
+        TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.year=:year", Book.class);
+        query.setParameter("year", year);
 
-        return (List<Book>) criteria.list();
+        return query.getResultList();
     }
 
     @Override
     public List<Book> recommendedBooks(String genreBook) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
-        criteria.add(Restrictions.eq("genre", genreBook));
+        TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.genre=:genreBook", Book.class);
+        query.setParameter("genre", genreBook);
 
-        return (List<Book>) criteria.list();
+        return query.getResultList();
     }
 
     @Override
     public List<Book> showAllBooks() {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Book.class);
+        TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b", Book.class);
 
-        return (List<Book>) criteria.list();
+        return query.getResultList();
     }
 
 }
