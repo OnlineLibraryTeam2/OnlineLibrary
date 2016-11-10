@@ -49,7 +49,7 @@ public class BookDaoImplTest {
         List<Book> books = bookDao.searchBookTitle(book.getTitle());
         assertEquals(1, books.size());
         assertEquals(book, books.get(0));
-        assertTrue(bookDao.delete(book));
+        assertTrue(authorDao.delete(author));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class BookDaoImplTest {
         assertEquals(1976, books.get(0).getYear());
         assertEquals(1, books.size());
         assertEquals(book, books.get(0));
-        assertTrue(bookDao.delete(book));
+        assertTrue(authorDao.delete(author));
     }
 
     @Test
@@ -74,6 +74,7 @@ public class BookDaoImplTest {
         assertEquals(1, books.size());
         assertTrue(bookDao.delete(books.get(0)));
         assertEquals(0, bookDao.showAllBooks().size());
+        assertTrue(authorDao.delete(author));
     }
 
     @Test
@@ -181,8 +182,8 @@ public class BookDaoImplTest {
 
     @After
     public void tearDown() throws Exception {
-        author = null;
         book = null;
+        author = null;
     }
 
 }

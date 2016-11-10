@@ -91,7 +91,7 @@ public class AuthorDaoTest {
         assertEquals(expected.size(), authors.size());
         assertTrue(authors.containsAll(expected));
 
-        for (Author current: expected) {
+        for (Author current: authors) {
             authorDao.delete(current);
         }
 
