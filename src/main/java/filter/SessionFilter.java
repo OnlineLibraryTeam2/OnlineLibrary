@@ -23,7 +23,7 @@ public class SessionFilter implements Filter {
             throws IOException, ServletException {
         if(!(servletRequest instanceof HttpServletRequest) || !(servletResponse instanceof HttpServletResponse)){
             //redirect
-
+            return;
         } else {
             HttpServletRequest request = (HttpServletRequest) servletRequest;
             HttpServletResponse response = (HttpServletResponse) servletResponse;
