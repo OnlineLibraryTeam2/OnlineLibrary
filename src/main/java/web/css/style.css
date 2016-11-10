@@ -1,0 +1,240 @@
+body, h1 {
+	margin:0;
+	padding:0;
+}
+
+body {
+font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size:19px;
+	background-color:#EEE;
+}
+
+li {
+	list-style-type:none;
+}
+
+li.userLogged {
+	font-style: italic;
+}
+
+a {
+	text-decoration:none;
+}
+
+header, #content, #footer, #Books, #searchBooks {
+	margin:auto;
+	margin-top:20px;
+	padding:5px;
+	width:60%;
+	border:2px solid #AAA;
+	border-radius:5px;
+	background-color:#fff;
+}
+
+#Books div.historyBooks {
+	margin:10px;
+}	
+
+#Books div.takenBooks {
+	margin:10px;
+}	
+
+#Books div.recommendedBooks {
+	
+	margin:10px;
+}	
+
+header {
+	background: url(../images/logo.jpg) no-repeat;
+	background-color: #A4A9AD;
+	height: 80px;
+}
+
+#footer {
+	font-size: 9px;
+	color: #777;
+}
+
+#footer  a{
+	font-size: 9px;
+	color: #777;
+	border:2px solid #AAA;
+	border-radius:5px;
+	background-color:#ccc;
+	margin-left: 447px;
+}
+
+nav {
+	display:inline-block;
+	width:100px;
+	float:right;
+	margin-right:70px;
+}
+
+nav.UserLog {
+	display:inline-block;
+	width:400px;
+	float:right;
+	text-align: right;
+	margin-right:10px;
+}
+
+h1 {
+/*background-image: url(../img/logo.jpg) ;
+background-repeat: no-repeat;
+background-position: center;*/
+	display:inline-block;
+	font-size:18px;
+	width:45%;
+}
+
+h1#needed {
+	
+	font-size:12px;
+	margin-top: -20px;
+	color: #F00;
+}
+
+h1.sub{
+	display:inline-block;
+	font-style: italic;
+	font-size:14px;
+	margin-left: 197px;
+	width:503px;
+	color: #FFF;
+}
+
+nav a {
+  display:block;
+	margin-bottom:10px;
+	padding:5px;
+	width:100px;
+	font-size:17px;
+	border:2px solid #AAA;
+	border-radius:10px;
+	color:#000;
+	background-color:#EEE;
+}
+
+nav a:hover {
+border:2px solid #AAA;
+	background-color:#777;
+	color:#FFF;
+}
+
+nav a.active {
+	background-color:#ff7620;
+}
+
+.filter li.login {
+	background-color:#daeadb;
+}
+
+h2 {
+	margin-left:40px;
+	font-size:30px;
+}
+
+.content p {
+	margin-left:40px;
+}
+
+p {
+	font-size: 24px;
+	font-style: italic;
+	border-bottom: 1px solid #CCC;
+}
+
+p.loginform {
+    text-align: justify;
+}
+
+form {
+	font-size: 18px;
+}
+
+ul.listings {
+	font-size: 12px;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+
+ul.filter {
+	margin:30px auto;
+	margin-left:40px;
+
+	font-size: 12px;
+}
+
+.filter li {
+	display:inline-block;
+	margin-left: -80px;
+}
+
+.filter li a {
+	display:block;
+	padding-top:5px;
+	font-size: 16px;
+	width:100px;
+	height:20px;
+	text-align:center;
+	border-radius:10px;
+	color:#BB5431;
+}
+
+.filter li a:hover {
+	color:#00f;
+}
+
+form{
+	margin:20px;
+}
+
+input[type=text] {
+	margin: 10px;
+	margin-top: 1px;
+    padding:5px; 
+    border:2px solid #ccc; 
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+	width: 250px;
+}
+
+input[type=text]:focus {
+    border-color:#333;
+}
+
+input[type=submit] {
+    display:block;
+	margin-bottom:10px;
+	margin-left: 0px;
+	padding:2px;
+	width:150px;
+	height: 29px;
+	font-size:13px;
+	border:2px solid #AAA;
+	border-radius:10px;
+	color:#000;
+	background-color:#EEE;
+}
+input[type=submit]:hover {
+	background-color:#daedda;
+}
+
+#password {
+	margin: 10px;
+	margin-top: 1px;
+    padding:5px; 
+    border:2px solid #ccc; 
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+	width: 250px;}
+	
+#age {
+	margin: 10px;
+	margin-top: 1px;
+    padding:5px; 
+    border:2px solid #ccc; 
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+	width: 250px;}
