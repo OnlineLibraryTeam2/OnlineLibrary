@@ -8,6 +8,8 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import service.GeneralService;
@@ -23,31 +25,18 @@ import static org.junit.Assert.*;
 /**
  * Created by student on 16.2.11.
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:app-test-context.xml")
 public class AuthorDaoTest {
 
-    /*private static AuthorDao authorDao;
-    private static BookDao bookDao;*/
-
-    private static GeneralService generalService;
-    private static Author author;
-
-
-
-
-   /* @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-        context =  new ClassPathXmlApplicationContext("app-context.xml");
-        generalService = context.getBean(GeneralService.class);
-
-    }*/
-
     @Autowired
     private EntityManagerFactory factory;
+
     @Autowired
     private AuthorDao authorDao;
+
+    private static Author author;
+
 
     @Before
     public void setUp() throws Exception {
@@ -65,10 +54,10 @@ public class AuthorDaoTest {
         assertTrue(authorDao.add(author));
         Author authorFromDb = authorDao.findAuthor(author);
         assertEquals(author, authorFromDb);
-       // assertTrue(generalService.deleteAuthor(author));
+        assertTrue(authorDao.delete(author));
     }
 
-    @Test
+    /*@Test
     public void delete() throws Exception {
 
         assertTrue(generalService.addAuthor(author));
@@ -131,15 +120,11 @@ public class AuthorDaoTest {
         assertEquals(expected.size(), actual.size());
         assertTrue(actual.containsAll(expected));
 
-        /*expected.stream().forEach(currentBook -> {
+        *//*expected.stream().forEach(currentBook -> {
             assertTrue(generalService.deleteBook(currentBook));
-        });*/
+        });*//*
 
         assertTrue(generalService.deleteAuthor(author));
-    }
+    }*/
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-        generalService = null;
-    }
 }

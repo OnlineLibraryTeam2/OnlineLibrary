@@ -13,7 +13,7 @@
     <context:component-scan base-package="dao"/>
     <context:component-scan base-package="service"/>
 
-    <context:property-placeholder location="app-test.properties"/>
+    <context:property-placeholder location="database.properties"/>
 
     <tx:annotation-driven transaction-manager="transactionManager" />
 
@@ -32,7 +32,7 @@
         </property>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
             </props>
@@ -42,5 +42,8 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
+
+
+
 
 </beans>

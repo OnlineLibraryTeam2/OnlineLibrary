@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -26,7 +27,6 @@ import java.util.List;
 public class AuthorDaoImpl implements AuthorDao {
 
 
-    private SessionFactory sessionFactory;
     @PersistenceContext
     private EntityManager manager;
 
@@ -37,13 +37,12 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public boolean add(Author author) {
         manager.persist(author);
-        //sessionFactory.getCurrentSession().save(author);
         return true;
     }
 
     @Override
     public boolean update(Author author) {
-        sessionFactory.getCurrentSession().update(author);
+        manager.merge(author);
         return true;
     }
 
@@ -56,34 +55,28 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Author findAuthor(Author author){
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Author.class);
-        criteria.add(Restrictions.eq("name", author.getName()));
-        criteria.add(Restrictions.eq("surname", author.getSurname()));
 
+        TypedQuery<Author> query = manager.createQuery(
+                "Select a FROM Author a WHERE a.name =:name AND a.surname =:surname", Author.class);
 
-        return (Author) criteria.uniqueResult();
+        query.setParameter("name", author.getName());
+        query.setParameter("surname", author.getSurname());
+
+        return query.getSingleResult();
     }
 
     @Override
     public List<Author> authorsList() {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Author.class);
-        return criteria.list();
+
+        TypedQuery<Author> query =
+                manager.createNamedQuery("SELECT a FROM author a", Author.class);
+        return query.getResultList();
     }
 
     @Override
     public List<Book> searchByAuthor(Author author) {
-        List<Author> authors = authorsList();
-
-        for (Author current : authors) {
-            if (author.equals(current)) {
-                return current.getBookList();
-            }
-        }
-
-        return null;
+        author = manager.find(Author.class, author.getId());
+        return author.getBookList();
     }
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 }
