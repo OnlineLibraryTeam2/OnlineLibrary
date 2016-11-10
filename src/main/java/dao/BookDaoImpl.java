@@ -42,7 +42,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public boolean delete(Book book) {
-        manager.find(Book.class, book);
+        book = manager.find(Book.class, book.getId());
         manager.remove(book);
 
         return true;
@@ -50,10 +50,12 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public boolean takeBook(Book book, Client client) {
-        Book clientBook = book;
-        clientBook.setBookCount(1);
+        book = manager.find(Book.class, book.getId());
+        Book clientBook = new Book(book.getTitle(), book.getYear(), book.getGenre(), book.getAuthor(), 1);
+        clientBook.setId(book.getId());
         book.setBookCount(book.getBookCount() - 1);
-        List<Book> takenBook = new ArrayList<>();
+        client = manager.find(Client.class, client.getId());
+        List<Book> takenBook = client.getTakenBooks();
         takenBook.add(clientBook);
         client.setTakenBooks(takenBook);
         manager.merge(book);
@@ -64,6 +66,8 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public boolean returnBook(Book book, Client client) {
+        client = manager.find(Client.class, client.getId());
+        book = manager.find(Book.class, book.getId());
         client.getTakenBooks().remove(book);
         client.setTakenBooks(client.getTakenBooks());
         book.setBookCount(book.getBookCount() + 1);
@@ -101,7 +105,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> recommendedBooks(String genreBook) {
         TypedQuery<Book> query = manager.createQuery("SELECT b FROM Book b WHERE b.genre=:genreBook", Book.class);
-        query.setParameter("genre", genreBook);
+        query.setParameter("genreBook", genreBook);
 
         return query.getResultList();
     }
