@@ -27,7 +27,7 @@
 
     <nav class="UserLog">
         <ul>
-        <li class="userLogged">Logged in as:</li> NAME </br> SURNAME
+        <li class="userLogged">Logged in as:</li> ${clientName} </br> ${clientSurname}
         </ul>
     </nav>
 

@@ -12,7 +12,9 @@ public class Run {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("app-context.xml");
         GeneralService generalService = applicationContext.getBean(GeneralService.class);
 
-        Client client = new Client("Oleg", "ddd", 23, "312", "test@mail.ru", "1234");
+        Client client = new Client("Oleg", "Petrov", 23, "312", "test@mail.ru", "1234");
         generalService.addClient(client);
+
+        System.out.println(generalService.signIn("test@mail.ru", "1234"));
     }
 }

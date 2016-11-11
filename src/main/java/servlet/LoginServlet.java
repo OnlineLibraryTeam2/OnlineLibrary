@@ -63,9 +63,11 @@ public class LoginServlet extends HttpServlet{
 
             req.getRequestDispatcher(ADMIN_JSP).forward(req, resp);
         } else if (generalService.signIn(req.getParameter("login"), req.getParameter("password")) != null) {
-
+            Client client = generalService.findClientByMail(req.getParameter("login"));
             HttpSession session = req.getSession(true);
             session.setAttribute("inSystem", "client");
+            req.setAttribute("clientName",client.getName());
+            req.setAttribute("clientSurname",client.getSurname());
 
             req.getRequestDispatcher(CLIENT_JSP).forward(req, resp);
         } else {
