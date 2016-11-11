@@ -9,13 +9,7 @@
 	function validateLogin(){
 			var v=document.forms["loginform"]["mail"].value;
 			var z=document.forms["loginform"]["password"].value;
-			if (v=="admin" && z=="admin"){
-				var newWin = window.open("WEB-INF/pages/admin.jsp",
-	  	 			"_self",
-	   				"width=100%,height=100%,resizable=yes,scrollbars=yes,status=yes"
-					)
-				alert("welcome admin");
-			}
+
 		var emailID = document.loginform.mail.value;
 		atpos = emailID.indexOf("@");
 		dotpos = emailID.lastIndexOf(".");
@@ -49,16 +43,11 @@
 			<h1>To view books that are available for you, please sign in or register.</h1>
 		
 			
-				<form name="loginform" onsubmit="return validateLogin();" method="post" action="WEB-INF/pages/client.jsp">
-				  Login:<br>
-				  <input type="text" name="mail" >
-				  <br>
-				  Password:<br>
-				  <input id="password" maxlength="12" type="password" name="password" >
-				  <br>
-				  <input type="submit" value="Sign in">
-				  
-				</form>
+				<form id="loginForm" action="login" method="post">
+                        <input type="text" name = "login" placeholder="Login"><br>
+                        <input id="password" name="password" type="password" placeholder="Password"><br>
+                        <button id="loginButton">login</button>
+                </form>
 			
 			<ul class="filter">
 				<li><a href="WEB-INF/pages/register.jsp" >Register!</a></li>

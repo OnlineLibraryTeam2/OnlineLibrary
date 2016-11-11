@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>OnlineLibrary</artifactId>
@@ -89,7 +89,7 @@
 			<artifactId>mockito-all</artifactId>
 			<version>${mockito-all.version}</version>
 		</dependency>
-		
+
 		<!-- JPA exercise using H2 database -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -146,11 +146,11 @@
 			<scope>test</scope>
 		</dependency>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-        </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -184,7 +184,7 @@
 			<version>${aspectj.version}</version>
 		</dependency>
 
-    </dependencies>
+	</dependencies>
 	<build>
 		<plugins>
 			<!-- Allow tests to extend classes from main folder (org.AllUnitTests extends org.testSuite.AllTests
