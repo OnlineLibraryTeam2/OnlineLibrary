@@ -32,8 +32,8 @@ public class SessionFilter implements Filter {
 
             HttpSession session = request.getSession();
             try {
-                boolean inSystem = (boolean) session.getAttribute("inSystem");
-                if (!inSystem) {
+                String inSystem = (String) session.getAttribute("inSystem");
+                if (!inSystem.equals("client")) {
                     throw new Exception();
                 }
                 LOG.info("SessionFilter: Session is alive");

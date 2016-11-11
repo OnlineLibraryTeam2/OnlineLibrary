@@ -36,7 +36,7 @@
 
 <div id="content" align=center>
     <h1>Commence search.</h1>
-		<form method="get" action="#">
+		<form method="get" action="client">
 		<input
  			onblur="this.value=(this.value=='')?this.title:this.value;"
  			onfocus="this.value=(this.value==this.title)?'':this.value;"
@@ -126,12 +126,12 @@ document.getElementById("bookHistory").innerHTML = text;
 var found_books, text, bLen, i;
 
 found_books = [];
-bLen = found_books.length;
+found_books = ${books};
 text = "<ul>";
 if(found_books.length == 0){
 		text +="You have NOT taken any books.";
-	} else if (found_books.length !=0){
-for (i = 0; i < bLen; i++) {
+	} else {
+for (i = 0; i < found_books.length ; i++) {
     text +="<li>"  + "<button type='button' onclick='findFunction()'>Take</button>" + " 	&nbsp; 	&nbsp; 	&nbsp;" + found_books[i] + "</li>";
 }
 }
